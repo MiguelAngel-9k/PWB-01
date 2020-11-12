@@ -1,0 +1,176 @@
+/* .carousel{
+	position: relative;
+	top: 24px;
+	left: 10%;
+	display: flex;	
+	background-color: green;	
+	width: 80%;
+	border: none;
+}
+ */
+input[type="button"]{
+	height: 400px;
+	background-color:transparent;
+	border: none; 
+	font-family: sans-serif;
+	font-size: 43px;
+	color: white;
+}
+
+/* .carousel-images{
+	background-size: cover;
+	width: 100%;
+	height: 100%;		
+} */
+
+.timer{
+	text-align: center;
+	margin: 34px;
+	color: white;
+	font-size: 42px;
+	letter-spacing: 5px;	
+	font-family: sans-serif;
+}
+
+/* Caja de las categorias */
+.store-categories{
+	color: white;
+	transform: translateX(100%);	
+	margin: 0px;
+	width: 15%;
+	font-family: 'Abril Fatface', cursive;
+	align-items: center;
+	
+	position: sticky;
+	/* background-color: rgb(29, 27, 27) ; */
+	margin: 0px;
+}
+
+.store-categories h3{
+	text-align: center;
+	border-radius: 40px;
+	/*width:;*/
+	margin: 0px;
+	padding: 0px;
+	margin-top: 50px;
+	background-color: rgb(65, 20, 39);	
+}
+
+.categorie{
+	border-bottom-width: 8px;
+	border-color: white ;
+	font-family: 'Abril Fatface', cursive;
+}
+/*CATEGORIAS*/
+ .btn{
+	
+	color: whitesmoke;
+	background-color:rgb(70, 35, 47);
+	font-family: 'Abril Fatface', cursive;
+	letter-spacing: 1px;
+	font-display: 20px;
+	font-size: large;
+}
+
+/* Botnoes del dropdown */
+.btn-group{
+	width: 700px;
+	font-weight: 500%;
+}
+
+.btn-group-vertical{
+	width: 100%;	
+	margin-top: 24px;	
+/* 	margin: 24px; */
+	font-weight: 500%;
+	letter-spacing: 0px;
+}
+
+/*Menu de las categorias*/
+.dropdown-menu{
+	background-color: white;
+}
+
+/* Slider */
+.carousel{
+	position: relative;
+	width: 70%;
+	left: 15%;	
+}
+
+/*Imagenes de los del slider*/ 
+.carousel-item img{
+	height: 540px;
+}
+
+/* Caja de los productos */
+.main-prodcuts{
+	padding: 15px;
+	background-color: thistle;
+	border-radius: 30px;
+	font-family: 'Abril Fatface', cursive;
+	transform: translate(55%, -215px);
+	color: white;
+	width: 55%;
+}
+
+.main-prodcuts h4{
+	text-align: center;
+}
+
+.separator{
+	background-color: white;
+	height: 5px;
+	width: 100%;
+}
+
+/* Carta del producto */
+.card{
+	margin: 20px;	
+}
+
+/* Descripcion del producto */
+.card-body{
+	color: black;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 24px;
+}
+
+.card-body .btn.btn-primary{
+	background-color: skyblue;
+	border: none;
+	color: black;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

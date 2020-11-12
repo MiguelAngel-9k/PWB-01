@@ -1,0 +1,162 @@
+.content {
+  position: relative;
+  left: 18%;
+  top: 50px;
+  width: 60%;
+  height: 180px;
+}
+
+.categories-title {
+  height: 50px;
+  width: 100%;
+  font-family: sans-serif;
+  font-size: 24;
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+.categories-title h2 {
+  padding: 0px;
+  margin: 0px;
+  padding-top: 10px;
+  font-family: sans-serif;
+  font-size: 32px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: whitesmoke;
+}
+
+.categories-box {
+  display: flex;
+  background-color: black;
+  height: 100%;
+  width: 100%;
+}
+
+.categories-box div {
+  background-color: purple;
+  margin: 5px;
+  height: 100%;
+  width: 100%;
+}
+
+.categories-box header {
+  text-align: center;
+  margin: 5px;
+  padding: 0px;
+}
+
+.categories-box div h3 {
+  margin: 0px;
+  padding: 0px;
+  font-family: sans-serif;
+  font-size: 24;
+  letter-spacing: 2px;
+  color: white;
+}
+
+.news-header {
+  color: white;
+  margin: 20px;
+  margin-top: 49px;
+  text-align: left;
+  padding-left: 40px;
+}
+
+.news-header h4 {
+  margin: 0px;
+  padding: 0px;
+  font-family: sans-serif;
+  font-size: 24px;
+}
+
+.news-line {
+  background-color: whitesmoke;
+  height: 2px;
+  width: 100%;
+}
+
+.news-line form {
+  margin-left: 95%;
+}
+
+.news-header select {
+  margin-left: 10px;
+  box-sizing: border-box;
+  width: 100px;
+  border: none;
+  border-color: #222;
+}
+
+.article {
+  text-decoration: none;
+}
+
+li {
+  list-style: none;
+}
+
+li header {
+  display: flex;
+}
+
+.article li img {
+  border-radius: 70px;
+}
+li div {
+  margin-left: 15px;
+}
+li h5 {
+  margin: 0px;
+  margin-top: 20px;
+  padding: 0px;
+  font-family: sans-serif;
+  font-size: 40px;
+  color: whitesmoke;
+  text-transform: uppercase;
+}
+li p {
+  margin: 0px;
+  padding: 0px;
+  margin-top: 10px;
+  margin-left: 20px;
+  color: whitesmoke;
+  font-size: 18px;
+}
+
+@media screen and (max-width: 1024px) {
+  .content {
+    width: 75%;
+  }
+}
+
+@media screen and (max-width: 768px) {
+
+    .content{
+        width: 100%;
+        left: 0px;
+    }
+
+    .categories-box{
+        flex-direction: column;
+        height: 480px; 
+    }
+
+    .categories-box div{
+        width: 98%;
+    }
+
+    .news-header{
+        padding-left: 0px;
+    }
+
+    li header{
+        display: inline-block;
+    }
+
+    .article li img{
+        transform: translateX(50%);
+       size: cover;
+    }
+}

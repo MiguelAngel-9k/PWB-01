@@ -1,0 +1,26 @@
+/* .my-accordion {
+  max-width: 60%;
+  width: 50%;
+}
+
+.my-accordion.card {
+  width: 60%;
+  transform: translate(25%);
+  margin-top: 5%;
+}
+
+.my-accordion.card-head{
+    background-color: black;
+}
+ */
+
+ .image-list li{
+     list-style: none;
+     color: white;
+ }
+
+ .image-list li img{
+     width: 80px;
+     height: 80px;
+     border-radius: 20;
+ }
