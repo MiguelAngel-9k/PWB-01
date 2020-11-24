@@ -89,7 +89,7 @@
                     %>
                     <li>
                         <!--Crear noticias-->
-                        <form action="./navNoticiaControlador" method="POST">
+                        <form action="./navCreadorContenidoControlador" method="GET">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
                         </form>
@@ -109,7 +109,7 @@
                     <!--Editor-->
                     <%} else if (usuario.getIdTipoUsuario() == 2) {%>
                     <li>
-                        <form action="./navNoticiaControlador" method="POST">
+                        <form action="./navCreadorContenidoControlador" method="GET">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
                         </form>
@@ -120,9 +120,10 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticias pendientes<span class="sr-only">(current)</span>
-                        </a>
+                        <form action="./navNoticiaControlador" method="POST">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Pendientes" name="">                  
+                        </form>
                     </li>
                     <% } else{%>
                     <%}%>

@@ -13,16 +13,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 /**
  *
  * @author mike_
  */
-public class navNoticiaControlador extends HttpServlet {
+@WebServlet(name = "navCreadorContenidoControlador", urlPatterns = {"/navCreadorContenidoControlador"})
+public class navCreadorContenidoControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,37 +36,19 @@ public class navNoticiaControlador extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet navNoticiaControlador</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet navNoticiaControlador at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
-
-           String[] nombreUsuario = request.getParameterValues("getName");
-           //Part  IMGusuario = request.getPart("imagenUsuarioSM");
-
-           modeloUsuario usuario = new modeloUsuario();
-           usuario.setNombreUsuario(nombreUsuario[0]);
-           //validar si lo encontro
-          List <modeloNoticia> noticias = noticiaDao.getPrevNoticia(usuario.getNombreUsuario(),2);
-           if(noticias==null){               
-               return;
-           }                                
-           if(usuarioDao.buscarUsuario(usuario)==null){
-               return;
-           }
-           
-           request.setAttribute("usuario",usuario);
-           request.setAttribute("noticias", noticias);
-           request.getRequestDispatcher("noticiasPendientes.jsp").forward(request, response);   
+        response.setContentType("text/html;charset=UTF-8");
+        try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html>");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet navCreadorContenidoControlador</title>");
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet navCreadorContenidoControlador at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
+        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -80,9 +63,25 @@ public class navNoticiaControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //vamos a obtener la noticia completa
-        //hay que casteralo a int
-       
+        modeloUsuario autor = new modeloUsuario();
+
+        String[] nombreUsuario = request.getParameterValues("getName");
+           //Part  IMGusuario = request.getPart("imagenUsuarioSM");
+
+           modeloUsuario usuario = new modeloUsuario();
+           usuario.setNombreUsuario(nombreUsuario[0]);
+           //validar si lo encontro
+          List <modeloNoticia> noticias = noticiaDao.getPrevNoticia(usuario.getNombreUsuario(),1);
+           if(noticias==null){               
+               return;
+           }                                
+           if(usuarioDao.buscarUsuario(usuario)==null){
+               return;
+           }
+           
+           request.setAttribute("usuario",usuario);
+           request.setAttribute("noticias", noticias);
+           request.getRequestDispatcher("publicarContenido.jsp").forward(request, response);   
     }
 
     /**
@@ -96,23 +95,7 @@ public class navNoticiaControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String[] nombreUsuario = request.getParameterValues("getName");
-           //Part  IMGusuario = request.getPart("imagenUsuarioSM");
-
-           modeloUsuario usuario = new modeloUsuario();
-           usuario.setNombreUsuario(nombreUsuario[0]);
-           //validar si lo encontro
-          List <modeloNoticia> noticias = noticiaDao.getPrevNoticia(usuario.getNombreUsuario(),2);
-           if(noticias==null){               
-               return;
-           }                                
-           if(usuarioDao.buscarUsuario(usuario)==null){
-               return;
-           }
-           
-           request.setAttribute("usuario",usuario);
-           request.setAttribute("noticias", noticias);
-           request.getRequestDispatcher("noticiasPendientes.jsp").forward(request, response);   
+        processRequest(request, response);
     }
 
     /**

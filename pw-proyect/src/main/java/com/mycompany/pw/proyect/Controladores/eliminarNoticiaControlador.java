@@ -13,16 +13,17 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.Part;
 
 /**
  *
  * @author mike_
  */
-public class navNoticiaControlador extends HttpServlet {
+@WebServlet(name = "eliminarNoticiaControlador", urlPatterns = {"/eliminarNoticiaControlador"})
+public class eliminarNoticiaControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -41,31 +42,13 @@ public class navNoticiaControlador extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet navNoticiaControlador</title>");            
+//            out.println("<title>Servlet eliminarNoticiaControlador</title>");            
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet navNoticiaControlador at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet eliminarNoticiaControlador at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-
-           String[] nombreUsuario = request.getParameterValues("getName");
-           //Part  IMGusuario = request.getPart("imagenUsuarioSM");
-
-           modeloUsuario usuario = new modeloUsuario();
-           usuario.setNombreUsuario(nombreUsuario[0]);
-           //validar si lo encontro
-          List <modeloNoticia> noticias = noticiaDao.getPrevNoticia(usuario.getNombreUsuario(),2);
-           if(noticias==null){               
-               return;
-           }                                
-           if(usuarioDao.buscarUsuario(usuario)==null){
-               return;
-           }
-           
-           request.setAttribute("usuario",usuario);
-           request.setAttribute("noticias", noticias);
-           request.getRequestDispatcher("noticiasPendientes.jsp").forward(request, response);   
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
@@ -80,9 +63,32 @@ public class navNoticiaControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //vamos a obtener la noticia completa
-        //hay que casteralo a int
-       
+        //Hay que hacer el metodo para eliminar la noticia del usuario
+        int idNoticia = Integer.parseInt(request.getParameter("idNoticiaEliminar"));
+        String _usuario = request.getParameter("usaurioEliminar");
+        
+        modeloUsuario usuario = new modeloUsuario();
+        usuario.setNombreUsuario(_usuario);
+
+        if (!noticiaDao.aprovarNoticia(idNoticia, 1)) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
+            return;
+        }
+
+        if (usuarioDao.buscarUsuario(usuario) == null) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
+            return;
+        }
+        
+         List<modeloNoticia> noticias = noticiaDao.getPrevNoticia(usuario.getNombreUsuario(), 2);
+        if (noticias == null) {
+            return;
+        }
+
+        request.setAttribute("noticias", noticias);
+        request.setAttribute("usuario", usuario);
+        request.getRequestDispatcher("noticiasPendientes.jsp").forward(request, response);
+        
     }
 
     /**
@@ -96,23 +102,7 @@ public class navNoticiaControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String[] nombreUsuario = request.getParameterValues("getName");
-           //Part  IMGusuario = request.getPart("imagenUsuarioSM");
-
-           modeloUsuario usuario = new modeloUsuario();
-           usuario.setNombreUsuario(nombreUsuario[0]);
-           //validar si lo encontro
-          List <modeloNoticia> noticias = noticiaDao.getPrevNoticia(usuario.getNombreUsuario(),2);
-           if(noticias==null){               
-               return;
-           }                                
-           if(usuarioDao.buscarUsuario(usuario)==null){
-               return;
-           }
-           
-           request.setAttribute("usuario",usuario);
-           request.setAttribute("noticias", noticias);
-           request.getRequestDispatcher("noticiasPendientes.jsp").forward(request, response);   
+        processRequest(request, response);
     }
 
     /**

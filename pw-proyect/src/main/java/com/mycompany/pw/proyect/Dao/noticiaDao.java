@@ -39,14 +39,21 @@ public class noticiaDao {
         return 0;
     }
 
-    public static List<modeloNoticia> getPrevNoticia(String autorNoticia) {
+    public static List<modeloNoticia> getPrevNoticia(String autorNoticia, int modo) {
         //modeloUsuario usuario = new modeloUsuario();
         List<modeloNoticia> listaNoticias = new ArrayList<>();
         try {
             Connection con = conexionDB.getConnection();
-            CallableStatement statement = con.prepareCall("call sp_mostrar_prevNoticia(?)");
-            statement.setString(1, autorNoticia);
-            ResultSet resultSet = statement.executeQuery();
+            CallableStatement statement;
+            ResultSet resultSet = null;
+            if (modo == 1) {
+                statement = con.prepareCall("call sp_mostrar_prevNoticia(?)");
+                statement.setString(1, autorNoticia);
+                resultSet = statement.executeQuery();
+            } else if (modo == 2) {
+                statement = con.prepareCall("call sp_mostrar_todasNoticias_p()");
+                resultSet = statement.executeQuery();
+            }
             // Si el resultSet tiene resultados lo recorremos
             while (resultSet.next()) {
                 // Obtenemos el valor del result set en base al nombre de la
@@ -102,12 +109,12 @@ public class noticiaDao {
                 }
                 imgPos++;
             }
-                        
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return null;
         }
-        
+
         return null;
     }
 
@@ -156,5 +163,20 @@ public class noticiaDao {
 
         }
         return 0;
+    }
+    
+    public static boolean aprovarNoticia(int idNoticia, int aprovacion){
+        try{
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call sp_evaluar_noticia(?,?)");
+            statement.setInt(1,aprovacion);
+            statement.setInt(2,idNoticia);
+            statement.executeUpdate();
+            return true;
+            
+        }catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
     }
 }
