@@ -80,7 +80,9 @@ public class navNoticiaControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //vamos a obtener la noticia completa
+        //hay que casteralo a int
+       
     }
 
     /**
@@ -94,7 +96,23 @@ public class navNoticiaControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        String[] nombreUsuario = request.getParameterValues("getName");
+           //Part  IMGusuario = request.getPart("imagenUsuarioSM");
+
+           modeloUsuario usuario = new modeloUsuario();
+           usuario.setNombreUsuario(nombreUsuario[0]);
+           //validar si lo encontro
+          List <modeloNoticia> noticias = noticiaDao.getPrevNoticia(usuario.getNombreUsuario());
+           if(noticias==null){               
+               return;
+           }                                
+           if(usuarioDao.buscarUsuario(usuario)==null){
+               return;
+           }
+           
+           request.setAttribute("usuario",usuario);
+           request.setAttribute("noticias", noticias);
+           request.getRequestDispatcher("publicarContenido.jsp").forward(request, response);   
     }
 
     /**

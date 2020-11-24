@@ -6,13 +6,16 @@
 package com.mycompany.pw.proyect.Controladores;
 
 import com.mycompany.pw.proyect.Dao.noticiaDao;
+import com.mycompany.pw.proyect.Dao.usuarioDao;
 import com.mycompany.pw.proyect.Modelos.modeloNoticia;
+import com.mycompany.pw.proyect.Modelos.modeloUsuario;
 import com.mycompany.pw.proyect.Utils.conexionDB;
 import com.mycompany.pw.proyect.Utils.fileUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -68,6 +71,23 @@ public class publicarNoticiaControlador extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
+        
+        modeloUsuario autor = new modeloUsuario();
+        
+        int idNoticia = Integer.parseInt(request.getParameter("idNoticia"));
+        autor.setNombreUsuario(request.getParameter("autorNoticia"));
+       modeloNoticia noticia = noticiaDao.getNoticia(autor.getNombreUsuario(), idNoticia);
+        if (noticia == null) {
+            request.getRequestDispatcher("publicarContenido.jsp").forward(request, response);
+        }
+
+        if (usuarioDao.buscarUsuario(autor) == null) {
+            return;
+        }
+
+        request.setAttribute("noticia", noticia);
+        request.setAttribute("usuario", autor);
+        request.getRequestDispatcher("noticiaCompleta.jsp").forward(request, response);
     }
 
     /**
@@ -110,7 +130,7 @@ public class publicarNoticiaControlador extends HttpServlet {
             String nameImage = file.getName() + System.currentTimeMillis() + fileUtils.GetExtension(contentType);
             String fullPath = path + fileUtils.RUTE_USER_IMAGE + "/" + nameImage;
             file.write(fullPath);
-            imagenes[imgPos] = fullPath;
+            imagenes[imgPos] = fileUtils.RUTE_USER_IMAGE + "/" + nameImage;
         }
 
         noticia.setImagenes(imagenes);
@@ -119,10 +139,9 @@ public class publicarNoticiaControlador extends HttpServlet {
         if (noticiaDao.setImagenes(noticia, 0) == 0) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         };
-        
-        
+
         request.setAttribute("prevNoticia", noticia);
-        
+
     }
 
     /**

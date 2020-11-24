@@ -75,6 +75,42 @@ public class noticiaDao {
         }
     }
 
+    public static modeloNoticia getNoticia(String autor, int idNoticia) {
+        try {
+            Connection con = conexionDB.getConnection();
+            CallableStatement statement = con.prepareCall("call sp_mostrar_noticia(?,?,?)");
+            statement.setInt(1, idNoticia);
+            statement.setString(2, autor);
+            statement.setInt(3, 1);
+            ResultSet resultSet = statement.executeQuery();
+
+            String[] imagenes = new String[3];
+            int imgPos = 0;
+
+            while (resultSet.next()) {
+                int _idNoticia = resultSet.getInt("idNoticia");
+                String _titulo = resultSet.getString("titulo");
+                String _desc = resultSet.getString("descripcion");
+                String _contenido = resultSet.getString("contenido");
+                String _categoria = resultSet.getString("categoria");
+                String _nombreUsuario = resultSet.getString("nombreUsuario");
+                imagenes[imgPos] = resultSet.getString("imagen");
+                String _video = resultSet.getString("video");
+                if (imgPos >= 2) {
+                    modeloNoticia noticias = new modeloNoticia(_titulo, _desc, _contenido, _categoria, _nombreUsuario, _idNoticia, imagenes, _video);
+                    return noticias;
+                }
+                imgPos++;
+            }
+                        
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+        
+        return null;
+    }
+
     public static boolean getIdNoticia(modeloNoticia noticia) {
 
         try {
@@ -83,7 +119,7 @@ public class noticiaDao {
             statement.setString(1, noticia.getAutor());
             statement.setString(2, noticia.getTitulo());
             ResultSet resultSet = statement.executeQuery();
-            if(resultSet.next()){
+            if (resultSet.next()) {
                 int idNoticia = resultSet.getInt("idNoticia");
                 noticia.setNoticia(idNoticia);
             }
@@ -98,13 +134,11 @@ public class noticiaDao {
     }
 
     public static int setImagenes(modeloNoticia noticia, int posImagen) {
-        
-        
+
         try {
-            
-            
-            if(noticiaDao.getIdNoticia(noticia)==false){
-                return 0;        
+
+            if (noticiaDao.getIdNoticia(noticia) == false) {
+                return 0;
             }
             Connection conn = conexionDB.getConnection();
             CallableStatement statement = conn.prepareCall("call sp_insertar_recursos(?,?,?)");

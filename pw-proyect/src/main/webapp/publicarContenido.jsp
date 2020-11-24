@@ -73,6 +73,50 @@
                             <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </li>
+                    <%
+                        //String rol = "Creador de contenido";
+                        if (usuario.getIdTipoUsuario() == 3) {
+                    %>
+                    <li>
+                        <!--Crear noticias-->
+                        <form action="./navNoticiaControlador" method="POST">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">
+                            Noticas marcadas<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <!--Moderador-->
+                    <% } else if (usuario.getIdTipoUsuario() == 1) {%>
+                    <li>
+                        <a class="nav-link" href="#">
+                            Noticas marcadas<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <!--Editor-->
+                    <%} else if (usuario.getIdTipoUsuario() == 2) {%>
+                    <li>
+                        <form action="./navNoticiaControlador" method="POST">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">
+                            Noticas marcadas<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">
+                            Noticias pendientes<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <%
+                        }
+                    %>
                 </ul>
                 <div class="form-inline my-2 my-lg-0">
                     <h2 style="margin-right: 40px" id="nombreUsuario"><%= usuario.getNombreUsuario()%></h2>
@@ -223,17 +267,21 @@
                         %>
                         <tbody>
                             <tr>
-                                <th scope="row"><%= noticia.getNoticia()%></th>
-                                <th scope="row"><%= noticia.getTitulo()%></th>
-                                <th scope="row"><%= noticia.getDecripcionCorta()%></th>
-                                <th scope="row"><%= noticia.getAutor()%></th>
-                                <th scope="row bg-warning"><%= noticia.getAprovacion()%></th>
-                                <th scope="row">
-                                    <form action="#" method="post">
-                                        <input type="submit" value="Ver" class="btn btn-primary">
-                                    </form>
-                                </th>
-                            </tr>
+                        <form action="./publicarNoticiaControlador" method="GET">
+                            <th scope="row">
+                                <input type="text" style="border: none; background: none;" readonly name="idNoticia" value="<%= noticia.getNoticia()%>"/>
+                            </th>
+                            <th scope="row"><%= noticia.getTitulo()%></th>
+                            <th scope="row"><%= noticia.getDecripcionCorta()%></th>                            
+                            <th scope="row">
+                                <input type="text" style="border: none; background: none;" readonly name="autorNoticia" value="<%= noticia.getAutor()%>"/>                                
+                            </th>
+                            <th scope="row bg-warning"><%= noticia.getAprovacion()%></th>
+                            <th scope="row">
+                                <input type="submit" value="Ver" class="btn btn-primary">
+                        </form>
+                        </th>
+                        </tr>
                         </tbody>  
                         <%
                             }

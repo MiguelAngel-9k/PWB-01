@@ -114,3 +114,13 @@ call sp_mostrar_prevNoticia ('miguel');
 
 delete from noticia where aprovacion = 0;
 update usuario set rol = 2 where idUsuario = 6;
+
+select categoria from categorias;
+
+create view vNoticiaCompleta as
+select noticia.idNoticia, noticia.titulo ,noticia.descripcion, noticia.contenido, categorias.categoria, usuario.nombreUsuario, recursosNoticia.imagen, recursosNoticia.video ,noticia.fechaPublicacion
+	from noticia 	inner join categorias on categorias.idCategoria = noticia.categoria
+					inner join usuario on usuario.idUsuario = noticia.autor
+					inner join recursosNoticia on recursosNoticia.noticia = noticia.idNoticia;
+                    
+select*from vNoticiaCompleta;

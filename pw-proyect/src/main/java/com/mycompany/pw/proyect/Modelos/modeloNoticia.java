@@ -18,12 +18,37 @@ public class modeloNoticia {
     private int aprovacion;
     private int noticia;
     private String imagenes[];
+    private String video;
 
     public modeloNoticia() {
     }
 
     public modeloNoticia(String autor) {
         this.autor = autor;        
+    }
+
+    public modeloNoticia(String titulo, String decripcionCorta, String contenido, String categoria, String autor, int noticia, String[] imagenes, String video) {
+        this.titulo = titulo;
+        this.decripcionCorta = decripcionCorta;
+        this.contenido = contenido;
+        this.categoria = categoria;
+        this.autor = autor;
+        this.noticia = noticia;
+        this.imagenes = imagenes;
+        this.video = video;
+    }
+    
+
+    public modeloNoticia(String titulo, String decripcionCorta, String contenido, String categoria, String autor, int aprovacion, int noticia, String[] imagenes, String video) {
+        this.titulo = titulo;
+        this.decripcionCorta = decripcionCorta;
+        this.contenido = contenido;
+        this.categoria = categoria;
+        this.autor = autor;
+        this.aprovacion = aprovacion;
+        this.noticia = noticia;
+        this.imagenes = imagenes;
+        this.video = video;
     }
 
     
@@ -113,6 +138,14 @@ public class modeloNoticia {
     
     public String getImagen(int pos){
        return this.imagenes[pos];
+    }
+
+    public String getVideo() {
+        return video;
+    }
+
+    public void setVideo(String video) {
+        this.video = video;
     }
     
 }
