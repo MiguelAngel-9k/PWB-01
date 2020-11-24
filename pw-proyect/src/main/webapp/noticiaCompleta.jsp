@@ -109,9 +109,11 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticias pendientes<span class="sr-only">(current)</span>
-                        </a>
+                        <!--Mostrar todas las noticias por revisar-->
+                        <<form action="" method="POST">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
+                        </form>
                     </li>
                     <%
                         }
