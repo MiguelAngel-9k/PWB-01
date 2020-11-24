@@ -93,7 +93,7 @@ alter table comentario add puntacion tinyint default(0);
  call eliminar_noticia(1,1);
  call sp_insertar_recursos('video.mp4', 1, 'no');
  call sp_editar_imagenPerfil(5,'assets/UserIcon/letra-r.png');
- call sp_mostrar_noticia ('miguel', 1);
+ call sp_mostrar_noticia ('miguel', 1,1);
  call sp_buscar_noticia('miguel','Primera noticia');
 call sp_buscar_usuario ('miguel');
 
@@ -112,6 +112,7 @@ select*from vNoticia;
 select*from vprevnoticia;
 call sp_mostrar_prevNoticia ('miguel');
 
+delete from recursosNoticia where idRecurso = 13;
 delete from noticia where aprovacion = 0;
 update usuario set rol = 2 where idUsuario = 6;
 
@@ -121,6 +122,8 @@ create view vNoticiaCompleta as
 select noticia.idNoticia, noticia.titulo ,noticia.descripcion, noticia.contenido, categorias.categoria, usuario.nombreUsuario, recursosNoticia.imagen, recursosNoticia.video ,noticia.fechaPublicacion
 	from noticia 	inner join categorias on categorias.idCategoria = noticia.categoria
 					inner join usuario on usuario.idUsuario = noticia.autor
-					inner join recursosNoticia on recursosNoticia.noticia = noticia.idNoticia;
+					inner join recursosNoticia on recursosNoticia.noticia = noticia.idNoticia
+                    where noticia.estado = 1;
                     
-select*from vNoticiaCompleta;
+select*from vNoticiaCompleta where nombreUsuario = 'miguel';
+call sp_mostrar_noticia(16, 'miguel',1);
