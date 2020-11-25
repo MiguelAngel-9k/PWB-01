@@ -183,7 +183,7 @@
                                         <input
                                             type="text"
                                             name="usuarioEliminar"
-                                            id="usuarioAprovacion"
+                                            id="usuarioEliminar"
                                             style="display: none;"
                                             value="<%= usuario.getNombreUsuario()%>"
                                             />

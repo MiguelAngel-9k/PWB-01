@@ -81,14 +81,14 @@ alter table comentario add fechaPublicacion Date default(curdate());
 alter table comentario add puntacion tinyint default(0);
 
  call sp_registrarUsuario ('melanie@gmail.com', 'mels', 'Mels', 'melanie', '64melanie', 'facebook/melanieMoreno', null, 'Registrado');
-  call sp_registrarUsuario ('anonimo@anonimo', 'Anonimo', 'anonimo',  'anonimo', 'noContrasenia', null, null, 'Anonimo');
+ call sp_registrarUsuario ('anonimo@anonimo', 'Anonimo', 'anonimo',  'anonimo', 'noContrasenia', null, null, 'Anonimo');
  call sp_iniciarSesion ('Miguel', 'contrasenia');
  call sp_editar_biografia ('miguel', 'hola, soy miguel y estoy editando mi biografia');
  call sp_editar_nombre ('Mels','Melanie michaelle', 'moreno martinez');
  call sp_insertar_noticia ('gatos con pulgares?', 'Los gatos consiguen pulgares opuestos', 'los gatos logran tener pulgares opuetos, declaran ya no necesitar de los humanos para poder abrir sus latas de atun, es asi como declaran su indepenencia gatuna', 'juegos', 'miguel');
  call sp_insertar_comentario ('Muy buena noticia', 'la noticia es muy informativa y super completa', 'Mels', 1);
  call sp_insertar_comentario ('Mala noticia', 'No me gusto para nada, esta mal redactada', 0, 1);
- call sp_evaluar_noticia (1, 1);
+ call sp_evaluar_noticia (0, 17);
  call sp_eliminar_comentario(2,0);
  call eliminar_noticia(1,1);
  call sp_insertar_recursos('video.mp4', 1, 'no');
@@ -127,3 +127,4 @@ select noticia.idNoticia, noticia.titulo ,noticia.descripcion, noticia.contenido
                     
 select*from vNoticiaCompleta where nombreUsuario = 'miguel';
 call sp_mostrar_noticia(16, 'miguel',1);
+call sp_mostrar_todasNoticias_p();

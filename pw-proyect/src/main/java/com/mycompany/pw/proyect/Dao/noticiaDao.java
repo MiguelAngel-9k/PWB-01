@@ -72,7 +72,7 @@ public class noticiaDao {
 //                noticia.setAprovacion(aprovacion);
 //                noticia.setAutor(autor);
             }
-
+            con.close();
             return listaNoticias;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -164,17 +164,32 @@ public class noticiaDao {
         }
         return 0;
     }
-    
-    public static boolean aprovarNoticia(int idNoticia, int aprovacion){
-        try{
+
+    public static boolean aprovarNoticia(int idNoticia, int aprovacion) {
+        try {
             Connection conn = conexionDB.getConnection();
             CallableStatement statement = conn.prepareCall("call sp_evaluar_noticia(?,?)");
-            statement.setInt(1,aprovacion);
+            statement.setInt(1, aprovacion);
+            statement.setInt(2, idNoticia);
+            statement.executeUpdate();
+            return true;
+
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean eliminarNoticia(int idNoticia) {
+        try {
+
+            Connection con = conexionDB.getConnection();
+            CallableStatement statement = con.prepareCall("call eliminar_noticia(?,?)");
+            statement.setInt(1,0);
             statement.setInt(2,idNoticia);
             statement.executeUpdate();
             return true;
-            
-        }catch (SQLException ex) {
+        } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return false;
         }

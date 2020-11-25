@@ -65,12 +65,12 @@ public class eliminarNoticiaControlador extends HttpServlet {
             throws ServletException, IOException {
         //Hay que hacer el metodo para eliminar la noticia del usuario
         int idNoticia = Integer.parseInt(request.getParameter("idNoticiaEliminar"));
-        String _usuario = request.getParameter("usaurioEliminar");
+        String _usuario = request.getParameter("usuarioEliminar");
         
         modeloUsuario usuario = new modeloUsuario();
         usuario.setNombreUsuario(_usuario);
 
-        if (!noticiaDao.aprovarNoticia(idNoticia, 1)) {
+        if (!noticiaDao.eliminarNoticia(idNoticia)) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
             return;
         }
