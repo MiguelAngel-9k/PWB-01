@@ -30,6 +30,7 @@ public class noticiaDao {
             statement.setString(4, noticia.getCategoria());
             statement.setString(5, noticia.getAutor());
 
+            conn.close();
             return statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -105,9 +106,11 @@ public class noticiaDao {
                 String _video = resultSet.getString("video");
                 if (imgPos >= 2) {
                     modeloNoticia noticias = new modeloNoticia(_titulo, _desc, _contenido, _categoria, _nombreUsuario, _idNoticia, imagenes, _video);
+                    con.close();
                     return noticias;
                 }
                 imgPos++;
+                con.close();
             }
 
         } catch (SQLException ex) {
@@ -130,6 +133,7 @@ public class noticiaDao {
                 int idNoticia = resultSet.getInt("idNoticia");
                 noticia.setNoticia(idNoticia);
             }
+            con.close();
             return true;
 
         } catch (SQLException ex) {
@@ -156,6 +160,7 @@ public class noticiaDao {
                 statement.setString(3, "IMG");
                 statement.executeUpdate();
             }
+            conn.close();
             return statement.executeUpdate();
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
@@ -172,6 +177,7 @@ public class noticiaDao {
             statement.setInt(1, aprovacion);
             statement.setInt(2, idNoticia);
             statement.executeUpdate();
+            conn.close();
             return true;
 
         } catch (SQLException ex) {
@@ -185,9 +191,29 @@ public class noticiaDao {
 
             Connection con = conexionDB.getConnection();
             CallableStatement statement = con.prepareCall("call eliminar_noticia(?,?)");
-            statement.setInt(1,0);
-            statement.setInt(2,idNoticia);
+            statement.setInt(1, 0);
+            statement.setInt(2, idNoticia);
             statement.executeUpdate();
+            con.close();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean editarNoticia(modeloNoticia noticia, int opcion) {
+        try {
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call editar_noticia(?,?,?,?)");
+            statement.setInt(1, noticia.getNoticia());
+            statement.setInt(2, opcion);
+            statement.setString(3, noticia.getTitulo());
+            statement.setString(4, noticia.getDecripcionCorta());
+            statement.setString(5, noticia.getContenido());
+            
+            statement.executeUpdate();            
+            conn.close();
             return true;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

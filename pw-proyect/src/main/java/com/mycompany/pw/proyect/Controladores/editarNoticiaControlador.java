@@ -11,7 +11,6 @@ import com.mycompany.pw.proyect.Modelos.modeloNoticia;
 import com.mycompany.pw.proyect.Modelos.modeloUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mike_
  */
-@WebServlet(name = "eliminarNoticiaControlador", urlPatterns = {"/eliminarNoticiaControlador"})
-public class eliminarNoticiaControlador extends HttpServlet {
+@WebServlet(name = "editarNoticiaControlador", urlPatterns = {"/editarNoticiaControlador"})
+public class editarNoticiaControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -42,10 +41,10 @@ public class eliminarNoticiaControlador extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet eliminarNoticiaControlador</title>");            
+//            out.println("<title>Servlet editarNoticiaControlador</title>");            
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet eliminarNoticiaControlador at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet editarNoticiaControlador at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
@@ -63,33 +62,27 @@ public class eliminarNoticiaControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Hay que hacer el metodo para eliminar la noticia del usuario
-        int idNoticia = Integer.parseInt(request.getParameter("idNoticiaEliminar"));
-        String _usuario = request.getParameter("usuarioEliminar");
-        
-        modeloUsuario usuario = new modeloUsuario();
-        usuario.setNombreUsuario(_usuario);
 
-        if (!noticiaDao.eliminarNoticia(idNoticia)) {
+        int idNoticia = Integer.parseInt(request.getParameter("IdNoticiaEditar"));
+        String autor = request.getParameter("autorNoticiaEditar");
+
+        modeloNoticia noticia = new modeloNoticia();
+        noticia.setNoticia(idNoticia);
+        noticia = noticiaDao.getNoticia(autor, idNoticia);
+        if (noticia == null) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
-            return;
         }
 
+        modeloUsuario usuario = new modeloUsuario();
+        usuario.setNombreUsuario(autor);
         if (usuarioDao.buscarUsuario(usuario) == null) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
-            return;
-        }
-        
-         List<modeloNoticia> noticias = noticiaDao.getPrevNoticia(usuario.getNombreUsuario(), 2);
-        if (noticias == null) {
-            return;
         }
 
-        
-        request.setAttribute("noticias", noticias);
-        request.setAttribute("usuario", usuario);
-        request.getRequestDispatcher("noticiasPendientes.jsp").forward(request, response);
-        
+        request.setAttribute("noticia", noticia);
+        request.setAttribute("usuario", autor);
+        request.getRequestDispatcher("editarNoticia.jsp").forward(request, response);
+
     }
 
     /**
@@ -103,7 +96,40 @@ public class eliminarNoticiaControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
+        modeloNoticia noticia = new modeloNoticia();
+        int idNoticia = Integer.parseInt(request.getParameter("idNoticiaTitulo"));
+        String autor = request.getParameter("TituloAutor");
+        noticia.setAutor(autor);
+        String opcion = request.getParameter("opcion");
+        String valor;
+
+        switch (opcion) {
+            case "Titulo":
+                valor = request.getParameter("editTitulo");
+                if (!noticiaDao.getIdNoticia(noticia)) {
+                    return;
+                }
+                if (noticiaDao.getNoticia(noticia.getAutor(), idNoticia) == null) {
+                    return;
+                }
+                noticiaDao.editarNoticia(noticia, 1);
+                break;
+            default:
+                break;
+        }
+
+        modeloUsuario usuario = new modeloUsuario();
+        usuario.setNombreUsuario(autor);
+
+        if (usuarioDao.buscarUsuario(usuario) == null) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
+        }
+
+        request.setAttribute("usuario", usuario);
+        request.setAttribute("noticias", noticia);
+        request.getRequestDispatcher("noticiasPendientes.jsp").forward(request, response);
+
     }
 
     /**

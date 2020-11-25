@@ -260,6 +260,7 @@
                                 <th scope="col">Autor</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Ver</th>
+                                <th scope="col">Editar</th>
                             </tr>
                         </thead>
                         <%
@@ -279,8 +280,20 @@
                             <th scope="row bg-warning"><%= noticia.getAprovacion()%></th>
                             <th scope="row">
                                 <input type="submit" value="Ver" class="btn btn-primary">
+                            </th>
+                            <<form action="./editarNoticiaaControlador" method= "GET">            
+                                <th scope="row">
+                                    <input type="hiden" name="IdNoticiaEditar" value="<%= noticia.getNoticia()%>"/>
+                                </th>
+                                <th scope="row">
+                                    <input type="hiden" name="autorNoticiaEditar" value="<%= noticia.getAutor()%>"/>
+                                </th>
+                                <th scope="row">
+                                    <input type="submit" value="Editar" class="btn btn-primary">
+                                </th>
+                            </form>
                         </form>
-                        </th>
+
                         </tr>
                         </tbody>  
                         <%
