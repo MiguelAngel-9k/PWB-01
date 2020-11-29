@@ -21,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mike_
  */
-@WebServlet(name = "editarNoticiaControlador", urlPatterns = {"/editarNoticiaControlador"})
-public class editarNoticiaControlador extends HttpServlet {
+@WebServlet(name = "editarDescControlador", urlPatterns = {"/editarDescControlador"})
+public class editarDescControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -33,23 +33,22 @@ public class editarNoticiaControlador extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
 //        response.setContentType("text/html;charset=UTF-8");
 //        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet editarNoticiaControlador</title>");            
+//            out.println("<title>Servlet editarDescControlador</title>");            
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet editarNoticiaControlador at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet editarDescControlador at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
-    }
-
+//    }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -62,27 +61,7 @@ public class editarNoticiaControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        int idNoticia = Integer.parseInt(request.getParameter("idNoticia"));
-        String autor = request.getParameter("autor");
-
-        modeloNoticia noticia = new modeloNoticia();
-        noticia.setNoticia(idNoticia);
-        noticia = noticiaDao.getNoticia(autor, idNoticia);
-        if (noticia == null) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        modeloUsuario usuario = new modeloUsuario();
-        usuario.setNombreUsuario(autor);
-        if (usuarioDao.buscarUsuario(usuario) == null) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        request.setAttribute("noticia", noticia);
-        request.setAttribute("usuario", usuario);
-        request.getRequestDispatcher("editarNoticia.jsp").forward(request, response);
-
+        //processRequest(request, response);
     }
 
     /**
@@ -98,37 +77,29 @@ public class editarNoticiaControlador extends HttpServlet {
             throws ServletException, IOException {
 
         modeloNoticia noticia = new modeloNoticia();
-        int idNoticia = Integer.parseInt(request.getParameter("idNoticiaTitulo"));
-        String autor = request.getParameter("TituloAutor");
-        noticia.setAutor(autor);
-        String opcion = request.getParameter("opcion");
-        String valor;
 
-        switch (opcion) {
-            case "Titulo":
-                valor = request.getParameter("editTitulo");
-                if (!noticiaDao.getIdNoticia(noticia)) {
-                    return;
-                }
-                if (noticiaDao.getNoticia(noticia.getAutor(), idNoticia) == null) {
-                    return;
-                }
-                noticiaDao.editarNoticia(noticia, 1);
-                break;
-            default:
-                break;
+        String autor = request.getParameter("autor");
+        int idNoticia = Integer.parseInt(request.getParameter("idNoticiaDescripcion"));
+        String Descripcion = request.getParameter("Descripcion");
+
+        if (!noticiaDao.editarDescripcionNoticia(idNoticia, Descripcion)) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
+        }
+
+        noticia = noticiaDao.getNoticia(autor, idNoticia);
+        if (noticia == null) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
         modeloUsuario usuario = new modeloUsuario();
         usuario.setNombreUsuario(autor);
-
         if (usuarioDao.buscarUsuario(usuario) == null) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
+        request.setAttribute("noticia", noticia);
         request.setAttribute("usuario", usuario);
-        request.setAttribute("noticias", noticia);
-        request.getRequestDispatcher("noticiasPendientes.jsp").forward(request, response);
+        request.getRequestDispatcher("editarNoticia.jsp").forward(request, response);
 
     }
 

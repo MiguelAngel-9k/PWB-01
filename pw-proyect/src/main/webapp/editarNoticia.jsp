@@ -10,8 +10,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%
     modeloUsuario usuario = (modeloUsuario) request.getAttribute("usuario");
-   // List<modeloNoticia> noticias = (List<modeloNoticia>) request.getAttribute("noticias");
-   modeloNoticia noticia = (modeloNoticia)request.getAttribute("noticia");
+    // List<modeloNoticia> noticias = (List<modeloNoticia>) request.getAttribute("noticias");
+    modeloNoticia noticia = (modeloNoticia) request.getAttribute("noticia");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -128,46 +128,57 @@
                                 data-parent="#editNoticia"
                                 >
                                 <div class="card-body bg-white">
-                                    <form action="./editarNoticiaControlador" method="POST">
+                                    <form action="./editarTiutuloControlador" method="POST">
                                         <div class="form-group">
                                             <label for="article-header">Editar titulo</label>
                                             <input
                                                 type="text"
-                                                name="editTitulo"
+                                                name="Titulo"
                                                 class="form-control"
-                                                value="<%= noticia.getTitulo() %>"
+                                                value="<%= noticia.getTitulo()%>"
                                                 />
-                                             <input
-                                                type="hiden"
-                                                name="opcion"
-                                                value="Titulo"
-                                                class="form-control"
-                                                />
-                                              <input
-                                                type="hiden"
-                                                name="TituloAutor"
-                                                value="<%= noticia.getAutor() %>"
+                                            <input
+                                                type="hidden"
+                                                name="autor"
+                                                value="<%= noticia.getAutor()%>"
                                                 class="form-control"
                                                 />
                                             <input
-                                                type="submit"
+                                                type="hidden"
                                                 name="idNoticiaTitulo"
-                                                value="<%= noticia.getNoticia() %>"
+                                                value="<%= noticia.getNoticia()%>"                                                
+                                                />
+                                            <input
+                                                type="submit"
+                                                name="editarTitulo"
+                                                value="Editar"
                                                 class="btn btn-primary mt-lg-3"
                                                 />
+
                                         </div>
                                     </form>
-                                    <form method="POST" action="">
+                                    <form method="POST" action="./editarDescControlador">
                                         <div class="form-group">
                                             <label for="descripcionCorta">Editar Descripción</label>
                                             <textarea
                                                 class="form-control"
                                                 id="descripcionCortaEditar"
-                                                name="descripcionCortaEditar"
-                                                ></textarea>
+                                                name="Descripcion"                          
+                                                ><%= noticia.getDecripcionCorta()%></textarea>
+                                            <input
+                                                type="hidden"
+                                                name="autor"
+                                                value="<%= noticia.getAutor()%>"
+                                                class="form-control"
+                                                />
+                                            <input
+                                                type="hidden"
+                                                name="idNoticiaDescripcion"
+                                                value="<%= noticia.getNoticia()%>"                                                
+                                                />
                                             <input
                                                 type="submit"
-                                                name="editarNombre"
+                                                name="editarDescripcion"
                                                 value="Editar"
                                                 class="btn btn-primary mt-lg-3"
                                                 />
@@ -192,17 +203,28 @@
                                                 />
                                         </div>
                                     </form>
-                                    <form action="" method="POST">
+                                    <form action="./editarContenidoControlador" method="POST">
                                         <div class="form-group">
                                             <label for="EditarContenido"
                                                    >Editar contenido de la noticia</label
                                             >
                                             <textarea
                                                 class="form-control"
-                                                name="EditarContenido"
+                                                name="Contenido"
                                                 id="ConteEditarContenidonido"
-                                                ></textarea>
+                                                ><%= noticia.getContenido()%></textarea>
                                         </div>
+                                        <input
+                                            type="hidden"
+                                            name="autor"
+                                            value="<%= noticia.getAutor()%>"
+                                            class="form-control"
+                                            />
+                                        <input
+                                            type="hidden"
+                                            name="idNoticiaContenido"
+                                            value="<%= noticia.getNoticia()%>"                                                
+                                            />
                                         <input
                                             type="submit"
                                             name="editarNombre"

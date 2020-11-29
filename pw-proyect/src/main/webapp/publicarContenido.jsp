@@ -79,7 +79,7 @@
                     %>
                     <li>
                         <!--Crear noticias-->
-                        <form action="./navNoticiaControlador" method="POST">
+                        <form action="./navCreadorContenidoControlador" method="GET">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
                         </form>
@@ -110,9 +110,10 @@
                         </a>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticias pendientes<span class="sr-only">(current)</span>
-                        </a>
+                         <form action="./navNoticiaControlador" method="POST">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Pendientes" name="">                  
+                        </form>
                     </li>
                     <%
                         }
@@ -238,19 +239,17 @@
                                     </form>
                                 </div>
                             </div>
-                        </div>
+                        </div>                                        
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <!--           <div class="card mt-lg-5">
-                                <div class="card-header bg-dark">
-                                  <h5 class="card-tittle">Titulo de la noticia</h5>
-                                </div>
-                                <div class="card-body">
-                                  <p class="card-text">Descripciónde corta</p>
-                                  
-                                </div>
-                              </div> -->      
+
+                <div class="col-lg-6"> 
+                    <form action="./editarNoticiaControlador" method="get"  enctype="multipart/form-data" name="editarNoticia">
+                        <input type="hidden" name="autor" value="<%= usuario.getNombreUsuario() %>">
+                        <label for="idNoticia">Introduzca el Registro para editar</label>
+                        <input type="text" name="idNoticia">
+                        <input type="submit" name="editar" value="Editar" class="btn btn-primary">
+                    </form>
                     <table class="table mt-lg-5">
                         <thead class="thead-dark">
                             <tr>
@@ -260,7 +259,6 @@
                                 <th scope="col">Autor</th>
                                 <th scope="col">Estado</th>
                                 <th scope="col">Ver</th>
-                                <th scope="col">Editar</th>
                             </tr>
                         </thead>
                         <%
@@ -280,39 +278,37 @@
                             <th scope="row bg-warning"><%= noticia.getAprovacion()%></th>
                             <th scope="row">
                                 <input type="submit" value="Ver" class="btn btn-primary">
+                            </th>      
+                            <th>
+                                <a href="/editarNoticiaControlador?idNoticia=<%= noticia.getNoticia()%>&autorNoticia=<%= noticia.getAutor()%>" class="btn btn-secondary">Editar</a>
                             </th>
-                            <<form action="./editarNoticiaaControlador" method= "GET">            
-                                <th scope="row">
-                                    <input type="hiden" name="IdNoticiaEditar" value="<%= noticia.getNoticia()%>"/>
-                                </th>
-                                <th scope="row">
-                                    <input type="hiden" name="autorNoticiaEditar" value="<%= noticia.getAutor()%>"/>
-                                </th>
-                                <th scope="row">
-                                    <input type="submit" value="Editar" class="btn btn-primary">
-                                </th>
-                            </form>
                         </form>
 
                         </tr>
                         </tbody>  
                         <%
                             }
-                        %>
-                    </table>    
+                        %>   
+                    </table>
+                    <<form action="./editarNoticiaControlador" method="GET">
+                        <label for="noticia">Editar noticia</label>
+                        <input type="text" name="idNoticia" class="form-group">
+                        <% modeloNoticia noticia = noticias.get(1);%>
+                        <input type="hidden" name="autor" value="<%= noticia.getAutor() %>">
+                        <input type="submit" value="Ver" class="btn btn-primary">                        
+                    </form>
                 </div>
             </div>
-        </div>
-        <script
-            src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"
-        ></script>
-        <script
-            src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
-            crossorigin="anonymous"
-        ></script>
+            <script
+                src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+                integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+                crossorigin="anonymous"
+            ></script>
+            <script
+                src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+                integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+                crossorigin="anonymous"
+            ></script>
     </body>
 </html>
 
