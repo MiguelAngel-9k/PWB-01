@@ -20,7 +20,15 @@ public class modeloComentario {
 
     public modeloComentario() {
     }
-    
+
+    public modeloComentario(String contenido, String usuario, int idComentario, int padre, int noticia, String imgUsuario) {
+        this.contenido = contenido;
+        this.usuario = usuario;
+        this.idComentario = idComentario;
+        this.padre = padre;
+        this.noticia = noticia;
+        this.imgUsuario = imgUsuario;
+    }        
     
 
     public modeloComentario(String contenido, String usuario, String foto,int noticia, int comentario) {
