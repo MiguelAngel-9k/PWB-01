@@ -5,8 +5,10 @@
  */
 package com.mycompany.pw.proyect.Controladores;
 
+import com.mycompany.pw.proyect.Dao.comentarioDao;
 import com.mycompany.pw.proyect.Dao.noticiaDao;
 import com.mycompany.pw.proyect.Dao.usuarioDao;
+import com.mycompany.pw.proyect.Modelos.modeloComentario;
 import com.mycompany.pw.proyect.Modelos.modeloNoticia;
 import com.mycompany.pw.proyect.Modelos.modeloUsuario;
 import com.mycompany.pw.proyect.Utils.conexionDB;
@@ -15,6 +17,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -71,12 +74,14 @@ public class publicarNoticiaControlador extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //processRequest(request, response);
-        
+
+        List<modeloComentario> comentarios = new ArrayList<>();
+
         modeloUsuario autor = new modeloUsuario();
-        
+
         int idNoticia = Integer.parseInt(request.getParameter("idNoticia"));
         autor.setNombreUsuario(request.getParameter("autorNoticia"));
-       modeloNoticia noticia = noticiaDao.getNoticia(autor.getNombreUsuario(), idNoticia);
+        modeloNoticia noticia = noticiaDao.getNoticia(autor.getNombreUsuario(), idNoticia);
         if (noticia == null) {
             request.getRequestDispatcher("publicarContenido.jsp").forward(request, response);
         }
@@ -85,6 +90,12 @@ public class publicarNoticiaControlador extends HttpServlet {
             return;
         }
 
+        comentarios = comentarioDao.obtenerComentarios(idNoticia);
+        if (comentarios == null) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
+        }
+
+        request.setAttribute("comentarios", comentarios);
         request.setAttribute("noticia", noticia);
         request.setAttribute("usuario", autor);
         request.getRequestDispatcher("noticiaCompleta.jsp").forward(request, response);

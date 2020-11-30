@@ -154,7 +154,7 @@ public class noticiaDao {
             Connection conn = conexionDB.getConnection();
             CallableStatement statement = conn.prepareCall("call sp_insertar_recursos(?,?,?)");
 
-            for (int i = 0; i <= 2 ; i++) {
+            for (int i = 0; i <= 2; i++) {
                 statement.setString(1, noticia.getImagen(i));
                 statement.setInt(2, noticia.getNoticia());
                 statement.setString(3, "IMG");
@@ -212,8 +212,8 @@ public class noticiaDao {
             statement.setString(3, noticia.getTitulo());
             statement.setString(4, noticia.getDecripcionCorta());
             statement.setString(5, noticia.getContenido());
-            
-            statement.executeUpdate();            
+
+            statement.executeUpdate();
             conn.close();
             return true;
         } catch (SQLException ex) {
@@ -221,16 +221,16 @@ public class noticiaDao {
             return false;
         }
     }
-    
-    public static boolean editarTituloNoticia(int idNoticia, String titulo){
+
+    public static boolean editarTituloNoticia(int idNoticia, String titulo) {
 
         try {
             Connection conn = conexionDB.getConnection();
             CallableStatement statement = conn.prepareCall("call sp_editar_titulo(?,?)");
             statement.setInt(1, idNoticia);
             statement.setString(2, titulo);
-            
-            statement.executeUpdate();            
+
+            statement.executeUpdate();
             conn.close();
             return true;
         } catch (SQLException ex) {
@@ -238,15 +238,15 @@ public class noticiaDao {
             return false;
         }
     }
-    
-    public static boolean editarDescripcionNoticia(int idNoticia, String descripcion){
-         try {
+
+    public static boolean editarDescripcionNoticia(int idNoticia, String descripcion) {
+        try {
             Connection conn = conexionDB.getConnection();
             CallableStatement statement = conn.prepareCall("call sp_editar_descripcion(?,?)");
             statement.setInt(1, idNoticia);
-            statement.setString(2, descripcion );
-            
-            statement.executeUpdate();            
+            statement.setString(2, descripcion);
+
+            statement.executeUpdate();
             conn.close();
             return true;
         } catch (SQLException ex) {
@@ -254,15 +254,48 @@ public class noticiaDao {
             return false;
         }
     }
-    
-    public static boolean editarContenido( int idNoticia, String contenido){
+
+    public static boolean editarContenidoNoticia(int idNoticia, String contenido) {
         try {
             Connection conn = conexionDB.getConnection();
             CallableStatement statement = conn.prepareCall("call sp_editar_contenido(?,?)");
             statement.setInt(1, idNoticia);
-            statement.setString(2, contenido );
-            
-            statement.executeUpdate();            
+            statement.setString(2, contenido);
+
+            statement.executeUpdate();
+            conn.close();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean editarCategoriaNoticia(int idNoticia, String categoria) {
+        try {
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call sp_editar_categoria(?,?)");
+            statement.setInt(1, idNoticia);
+            statement.setString(2, categoria);
+
+            statement.executeUpdate();
+            conn.close();
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean editarImagenNoticia(int idNoticia, String nuevaImagen, String viejaImagen) {
+        try {
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call sp_editar_imagen(?,?,?)");
+            statement.setInt(1, idNoticia);
+            statement.setString(2, nuevaImagen);
+            statement.setString(2, viejaImagen);
+
+            statement.executeUpdate();
             conn.close();
             return true;
         } catch (SQLException ex) {

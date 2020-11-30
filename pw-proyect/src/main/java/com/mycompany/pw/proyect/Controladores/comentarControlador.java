@@ -5,15 +5,17 @@
  */
 package com.mycompany.pw.proyect.Controladores;
 
-import com.mycompany.pw.proyect.Dao.categoriasDao;
+import com.mycompany.pw.proyect.Dao.comentarioDao;
 import com.mycompany.pw.proyect.Dao.noticiaDao;
 import com.mycompany.pw.proyect.Dao.usuarioDao;
-import com.mycompany.pw.proyect.Modelos.categoriasModelo;
+import com.mycompany.pw.proyect.Modelos.modeloComentario;
 import com.mycompany.pw.proyect.Modelos.modeloNoticia;
 import com.mycompany.pw.proyect.Modelos.modeloUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,8 +26,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mike_
  */
-@WebServlet(name = "editarNoticiaControlador", urlPatterns = {"/editarNoticiaControlador"})
-public class editarNoticiaControlador extends HttpServlet {
+@WebServlet(name = "comentarControlador", urlPatterns = {"/comentarControlador"})
+public class comentarControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,10 +46,10 @@ public class editarNoticiaControlador extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet editarNoticiaControlador</title>");            
+//            out.println("<title>Servlet comentarControlador</title>");            
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet editarNoticiaControlador at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet comentarControlador at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
@@ -66,32 +68,6 @@ public class editarNoticiaControlador extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        int idNoticia = Integer.parseInt(request.getParameter("idNoticia"));
-        String autor = request.getParameter("autor");
-
-        modeloNoticia noticia = new modeloNoticia();
-        noticia.setNoticia(idNoticia);
-        noticia = noticiaDao.getNoticia(autor, idNoticia);
-        if (noticia == null) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        modeloUsuario usuario = new modeloUsuario();
-        usuario.setNombreUsuario(autor);
-        if (usuarioDao.buscarUsuario(usuario) == null) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        List<categoriasModelo> categorias = categoriasDao.getCategorias();
-        if (categorias == null) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        //request.setAttribute("categirias", categorias);
-        request.setAttribute("noticia", noticia);
-        request.setAttribute("usuario", usuario);
-        request.getRequestDispatcher("editarNoticia.jsp").forward(request, response);        
-
     }
 
     /**
@@ -106,38 +82,52 @@ public class editarNoticiaControlador extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        modeloNoticia noticia = new modeloNoticia();
-        int idNoticia = Integer.parseInt(request.getParameter("idNoticiaTitulo"));
-        String autor = request.getParameter("TituloAutor");
-        noticia.setAutor(autor);
-        String opcion = request.getParameter("opcion");
-        String valor;
+        List<modeloComentario> comentarios = new ArrayList<>();
 
-        switch (opcion) {
-            case "Titulo":
-                valor = request.getParameter("editTitulo");
-                if (!noticiaDao.getIdNoticia(noticia)) {
-                    return;
-                }
-                if (noticiaDao.getNoticia(noticia.getAutor(), idNoticia) == null) {
-                    return;
-                }
-                noticiaDao.editarNoticia(noticia, 1);
-                break;
-            default:
-                break;
+        modeloComentario _comentario = new modeloComentario();
+        modeloUsuario _usuario = new modeloUsuario();
+        modeloNoticia _noticia = new modeloNoticia();
+
+        String usuario = request.getParameter("usuario");
+        String noticia = request.getParameter("noticia");
+        String contenido = request.getParameter("comentario");
+
+        int idNoticia = 0;
+
+        if (noticia != null) {
+            idNoticia = Integer.parseInt(noticia);
         }
 
-        modeloUsuario usuario = new modeloUsuario();
-        usuario.setNombreUsuario(autor);
+        _comentario.setUsuario(usuario);
+        _usuario.setNombreUsuario(usuario);
+        _comentario.setNoticia(idNoticia);
+        _noticia.setNoticia(idNoticia);
+        _comentario.setContenido(contenido);
 
-        if (usuarioDao.buscarUsuario(usuario) == null) {
+        if (!comentarioDao.insertarComentario(_comentario)) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
-        request.setAttribute("usuario", usuario);
-        request.setAttribute("noticias", noticia);
-        request.getRequestDispatcher("noticiasPendientes.jsp").forward(request, response);
+        _noticia = noticiaDao.getNoticia(usuario, idNoticia);
+
+        if (_noticia == null) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
+        }
+
+        if (usuarioDao.buscarUsuario(_usuario) == null) {
+            return;
+        }
+
+        comentarios = comentarioDao.obtenerComentarios(idNoticia);
+        if (comentarios == null) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
+        }
+
+        //  request.setAttribute("comentarios",)
+        request.setAttribute("comentarios", comentarios);
+        request.setAttribute("noticia", _noticia);
+        request.setAttribute("usuario", _usuario);
+        request.getRequestDispatcher("noticiaCompleta.jsp").forward(request, response);
 
     }
 

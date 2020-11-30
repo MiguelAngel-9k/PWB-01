@@ -4,6 +4,7 @@
     Author     : mike_
 --%>
 
+<%@page import="com.mycompany.pw.proyect.Modelos.categoriasModelo"%>
 <%@page import="java.util.List"%>
 <%@page import="com.mycompany.pw.proyect.Modelos.modeloNoticia"%>
 <%@page import="com.mycompany.pw.proyect.Modelos.modeloUsuario"%>
@@ -12,6 +13,7 @@
     modeloUsuario usuario = (modeloUsuario) request.getAttribute("usuario");
     // List<modeloNoticia> noticias = (List<modeloNoticia>) request.getAttribute("noticias");
     modeloNoticia noticia = (modeloNoticia) request.getAttribute("noticia");
+    //List<categoriasModelo> categorias = (List<categoriasModelo>) request.getAttribute("categorias");
 %>
 <!DOCTYPE html>
 <html lang="en">
@@ -183,26 +185,7 @@
                                                 class="btn btn-primary mt-lg-3"
                                                 />
                                         </div>
-                                    </form>
-                                    <form method="POST">
-                                        <div class="form-group">
-                                            <label for="CambiarimagenCabecera"
-                                                   >Cambiar Imagen para el titulo</label
-                                            >
-                                            <input
-                                                type="file"
-                                                class="form-control-file btn btn-danger"
-                                                id="CambiarimagenCabecera"
-                                                name="CambiarimagenCabecera"
-                                                />
-                                            <input
-                                                type="submit"
-                                                name="editarNombre"
-                                                value="Editar"
-                                                class="btn btn-primary mt-lg-3"
-                                                />
-                                        </div>
-                                    </form>
+                                    </form>                                   
                                     <form action="./editarContenidoControlador" method="POST">
                                         <div class="form-group">
                                             <label for="EditarContenido"
@@ -232,20 +215,31 @@
                                             class="btn btn-primary mt-lg-3"
                                             />
                                     </form>
-                                    <form action="" method="POST">
+                                    <form action="./editarCategoriaControlador" method="POST">
                                         <div class="form-group">
-                                            <label for="EditarCategoria">Cambiar categoria</label>
+                                            <label for="Categoria">Cambiar categoria</label>
                                             <select
                                                 class="form-control"
-                                                id="EditarCategoria"
-                                                name="EditarCategoria"
+                                                id="Categoria"
+                                                name="Categoria"
                                                 >
-                                                <option>Gamess</option>
-                                                <option>Hardware</option>
-                                                <option>Software</option>
-                                                <option>Consoles</option>
-                                                <option>Brands</option>
+                                                <option value="juegos">juegos</option>
+                                                <option value="tarjetas graficas">tarjetas graficas</option>
+                                                <option value="amd">amd</option>
+                                                <option value="intel">intel</option>
+                                                <option value="celulares">celulares</option>
                                             </select>
+                                            <input
+                                                type="hidden"
+                                                name="autor"
+                                                value="<%= noticia.getAutor()%>"
+                                                class="form-control"
+                                                />
+                                            <input
+                                                type="hidden"
+                                                name="idNoticiaCategoria"
+                                                value="<%= noticia.getNoticia()%>"                                                
+                                                />
                                         </div>
                                         <input
                                             type="submit"
@@ -254,41 +248,55 @@
                                             class="btn btn-primary mt-lg-3"
                                             />
                                     </form>
-                                    <form action="" method="POST">
+                                    <form action="./editarImagenNoticiaControlador" method="POST" enctype="multipart/form-data">
                                         <div class="form-group">
-                                            <label for="EditarimagenCentral"
+                                            <label for="Cebcera"
+                                                   >Cambiar Imagen para el titulo</label
+                                            >
+                                            <input
+                                                type="hidden"
+                                                name="imagenCabecera"
+                                                value="<%= noticia.getImagen(0)%>"
+                                                >
+                                            <input
+                                                type="file"
+                                                class="form-control-file btn btn-danger"
+                                                id="CambiarimagenCabecera"
+                                                name="Cabecera"
+                                                />
+                                            <label for="Central"
                                                    >Cambiar imagen Central</label
                                             >
+                                            <input
+                                                type="hidden"
+                                                name="imagenCentral"
+                                                value="<%= noticia.getImagen(1)%>"
+                                                >
                                             <input
                                                 type="file"
                                                 class="form-control-file btn btn-danger"
                                                 id="EditarimagenCentral"
-                                                name="EditarimagenCentral"
+                                                name="Central"
                                                 />
-                                        </div>
-                                        <input
-                                            type="submit"
-                                            name="editarNombre"
-                                            value="Editar"
-                                            class="btn btn-primary mt-lg-3"
-                                            />
-                                    </form>
-                                    <form action="" method="POST">
-                                        <div class="form-group">
-                                            <label for="CambiarImagenFinal">Imagen Final</label>
+                                            <label for="Final">Imagen Final</label>
+                                            <input
+                                                type="hidden"
+                                                name="imagenFinal"
+                                                value="<%= noticia.getImagen(0)%>"
+                                                >
                                             <input
                                                 type="file"
                                                 class="form-control-file btn btn-danger"
                                                 id="CambiarImagenFinal"
-                                                name="CambiarImagenFinal"
+                                                name="Final"
                                                 />
                                             <input
                                                 type="submit"
-                                                name="editarNombre"
+                                                name="editarImagen"
                                                 value="Editar"
                                                 class="btn btn-primary mt-lg-3"
-                                                />
-                                        </div>
+                                                />  
+                                        </div>                                           
                                     </form>
                                 </div>
                             </div>
