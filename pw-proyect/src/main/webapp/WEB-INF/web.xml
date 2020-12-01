@@ -14,6 +14,8 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
+        <welcome-file>noticiasPrincipalControlador</welcome-file>
         <welcome-file>registroUsuarios.jsp</welcome-file>
+        <welcome-file>paginaPrincipal.jsp</welcome-file>
     </welcome-file-list>
 </web-app>

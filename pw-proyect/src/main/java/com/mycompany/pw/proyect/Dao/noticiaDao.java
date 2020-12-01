@@ -303,4 +303,31 @@ public class noticiaDao {
             return false;
         }
     }
+
+    public static List<modeloNoticia> noticiasPrincipales() {
+        List<modeloNoticia> noticias = new ArrayList<>();
+        try {
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call sp_noticias_principal()");
+            ResultSet resultSet = statement.executeQuery();
+            
+            
+            while(resultSet.next()){
+                int idNoticia = resultSet.getInt("idNoticia");
+                int aprovacion = resultSet.getInt("aprovacion");
+                String titulo = resultSet.getString("titulo");
+                String descripcion = resultSet.getString("descripcion");
+                String autor = resultSet.getString("nombreUsuario");
+                
+                noticias.add(new modeloNoticia(titulo, descripcion, autor, aprovacion, idNoticia));
+            }
+            
+            
+            conn.close();
+            return noticias;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
 }

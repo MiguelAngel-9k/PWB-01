@@ -30,9 +30,9 @@
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" style="font-size: 34px" href="index.html"
-               >The NavBar</a
-            >
+            <form action="./noticiasPrincipalControlador" method="GET">                
+                <input class="nav-brand" style="border: none; background: none;" type="submit" value="The navbar" name="">                  
+            </form>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -48,9 +48,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#"
-                           >Inicio <span class="sr-only">(current)</span></a
-                        >
+                        <form action="./noticiasPrincipalControlador" method="GET">                
+                            <input class="nav-logo" style="border: none; background: none;" type="submit" value="Inicior" name="">                  
+                        </form>
                     </li>
                     <!--             <li class="nav-item">
                               <a class="nav-link" href="#">Link</a>
@@ -75,8 +75,9 @@
                         </div>
                     </li>
                     <%
-                        //String rol = "Creador de contenido";
-                        if (usuario.getIdTipoUsuario() == 3) {
+                        if (usuario != null) {
+                            //String rol = "Creador de contenido";
+                            if (usuario.getIdTipoUsuario() == 3) {
                     %>
                     <li>
                         <!--Crear noticias-->
@@ -117,10 +118,10 @@
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
                         </form>
                     </li>
-                    <%
-                        }
-                    %>
                 </ul>
+                <%
+                    }
+                %>
                 <div class="form-inline my-2 my-lg-0">
                     <h2 style="margin-right: 40px"><%= usuario.getNombreUsuario()%></h2>
                     <img
@@ -133,6 +134,24 @@
                         id="imagenUsuarioSM"
                         />
                 </div>
+                <%
+                } else if (usuario == null) {
+                %>
+                <div class="form-inline my-2 my-lg-0">
+                    <h2 style="margin-right: 40px">Anonimo</h2>
+                    <img
+                        class="mr-5"
+                        style="border-radius: 30px"
+                        height="80px"
+                        width="80px"
+                        src="assets/UserIcon/usuario.png"
+                        alt=""
+                        id="imagenUsuarioSM"
+                        />
+                </div>
+                <%
+                    }
+                %>
             </div>
         </nav>
 
@@ -205,22 +224,25 @@
                     <!-- <form action="" method="post">
                          <label for="tituloComentario">Titulo del comentario</label><br/>
                          <input type="text" name="tituloComentario" id="">
-                         <input type="text" style="border: none; background: none;" name="nombreUsuario" value="<%= usuario.getNombreUsuario()%>"><br/>
+                         <input type="text" style="border: none; background: none;" name="nombreUsuario" value=""><br/>
                          <label for="contenidoComentario">Comentario</label><br/>
                          <textarea name="contenidoComentario" id="" cols="50" rows="3"></textarea><br/>            
                          <input type="submit" name="publicarComentario" value="Publicar" class="btn btn-danger">
                     <%
-                        //si es moderador le debe aparecer la opcion de borrar comentario
-                        if (usuario.getIdTipoUsuario() == 1) {
+                        if (usuario != null) {
+                            //si es moderador le debe aparecer la opcion de borrar comentario
+                            if (usuario.getIdTipoUsuario() == 1) {
                     %>
                     <input type="submit" name="eliminarComentario" value="Eliminar" class="btn btn-warning mt-lg-3">
                     <%
+                            }
                         }
                     %>
                 </form>-->
                     <%
-                        for (modeloComentario comentario : comentarios) {
-                            if (comentario.getPadre() == 0) {
+                        if (comentarios != null) {
+                            for (modeloComentario comentario : comentarios) {
+                                if (comentario.getPadre() == 0) {
                     %>
                     <div class="media">
                         <img style="max-height: 64px; max-height: 64px" src="<%= comentario.getImgUsuario()%>" class="mr-3" alt="Foto de perfil del usuario">
@@ -250,9 +272,9 @@
                                 </div>
                                 <div class="card-body">
                                     <form action="./respuestaComentarioControlador" method="POST" name="agregarRespueta">
-                                        <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                                        <input type="hidden" name="usuario" value="<%= comentario.getUsuario()%>">
                                         <input type="hidden" name="noticia" value="<%= noticia.getNoticia()%>">   
-                                        <input type="hidden" name="padre" value="<%= comentario.getIdComentario() %>">
+                                        <input type="hidden" name="padre" value="<%= comentario.getIdComentario()%>">
                                         <textarea name="comentario" class="col"></textarea>
                                         <input type="submit" name="Comentar" value="Enviar" class="btn btn-primary">
                                     </form>
@@ -261,6 +283,7 @@
                         </div>
                     </div>
                     <%
+                                }
                             }
                         };
                     %>
@@ -274,8 +297,19 @@
                         </div>
                         <div class="card-body">
                             <form action="./comentarControlador" method="POST" name="agregarComentario">
+                                <%
+                                    if (usuario != null) {
+                                %>
                                 <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
-                                <input type="hidden" name="noticia" value="<%= noticia.getNoticia()%>">                                
+                                <input type="hidden" name="noticia" value="<%= noticia.getNoticia()%>">  
+                                <%
+                                } else {
+                                %>
+                                <input type="hidden" name="usuario" value="anonimo">
+                                <input type="hidden" name="noticia" value="<%= noticia.getNoticia()%>">  
+                                <%
+                                    }
+                                %>                                
                                 <textarea name="comentario" class="col"></textarea>
                                 <input type="submit" name="Comentar" value="Enviar" class="btn btn-primary">
                             </form>

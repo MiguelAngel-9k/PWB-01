@@ -5,17 +5,12 @@
  */
 package com.mycompany.pw.proyect.Controladores;
 
-import com.mycompany.pw.proyect.Dao.comentarioDao;
 import com.mycompany.pw.proyect.Dao.noticiaDao;
-import com.mycompany.pw.proyect.Dao.usuarioDao;
-import com.mycompany.pw.proyect.Modelos.modeloComentario;
 import com.mycompany.pw.proyect.Modelos.modeloNoticia;
-import com.mycompany.pw.proyect.Modelos.modeloUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,8 +21,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mike_
  */
-@WebServlet(name = "comentarControlador", urlPatterns = {"/comentarControlador"})
-public class comentarControlador extends HttpServlet {
+@WebServlet(name = "noticiasPrincipalControlador", urlPatterns = {"/noticiasPrincipalControlador"})
+public class noticiasPrincipalControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,16 +35,26 @@ public class comentarControlador extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+
+        List<modeloNoticia> noticias = noticiaDao.getPrevNoticia("", 2);
+
+        if (noticias == null) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
+        }
+
+        request.setAttribute("noticias", noticias);
+        request.getRequestDispatcher("paginaPrincipal.jsp").forward(request, response);
+
 //        response.setContentType("text/html;charset=UTF-8");
 //        try (PrintWriter out = response.getWriter()) {
 //            /* TODO output your page here. You may use following sample code. */
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet comentarControlador</title>");            
+//            out.println("<title>Servlet noticiasPrincipalControlador</title>");            
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet comentarControlador at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet noticiasPrincipalControlador at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
@@ -68,6 +73,24 @@ public class comentarControlador extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+        List<modeloNoticia> noticias = noticiaDao.getPrevNoticia("", 2);
+        List<modeloNoticia> noticiasDestacadas = new ArrayList<>();
+
+        if (noticias == null) {
+            request.getRequestDispatcher("fail.jsp").forward(request, response);
+        }
+
+        for (int i = 0; i < 3; i++) {
+            String autor = noticias.get(i).getAutor();
+            int idNoticia = noticias.get(i).getNoticia();
+            modeloNoticia temp = noticiaDao.getNoticia(autor, idNoticia);
+            noticiasDestacadas.add(temp);
+        }
+        
+        request.setAttribute("destacadas",noticiasDestacadas);
+        request.setAttribute("noticias", noticias);
+        request.getRequestDispatcher("paginaPrincipal.jsp").forward(request, response);
+
     }
 
     /**
@@ -81,54 +104,7 @@ public class comentarControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        List<modeloComentario> comentarios = new ArrayList<>();
-
-        modeloComentario _comentario = new modeloComentario();
-        modeloUsuario _usuario = new modeloUsuario();
-        modeloNoticia _noticia = new modeloNoticia();
-
-        String usuario = request.getParameter("usuario");
-        String noticia = request.getParameter("noticia");
-        String contenido = request.getParameter("comentario");
-
-        int idNoticia = 0;
-
-        if (noticia != null) {
-            idNoticia = Integer.parseInt(noticia);
-        }
-
-        _comentario.setUsuario(usuario);
-        _usuario.setNombreUsuario(usuario);
-        _comentario.setNoticia(idNoticia);
-        _noticia.setNoticia(idNoticia);
-        _comentario.setContenido(contenido);
-
-        if (!comentarioDao.insertarComentario(_comentario)) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        _noticia = noticiaDao.getNoticia(usuario, idNoticia);
-
-        if (_noticia == null && usuario != "anonimo") {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        if (usuarioDao.buscarUsuario(_usuario) == null) {
-            return;
-        }
-
-        comentarios = comentarioDao.obtenerComentarios(idNoticia);
-        if (comentarios == null) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        //  request.setAttribute("comentarios",)
-        request.setAttribute("comentarios", comentarios);
-        request.setAttribute("noticia", _noticia);
-        request.setAttribute("usuario", _usuario);
-        request.getRequestDispatcher("noticiaCompleta.jsp").forward(request, response);
-
+        processRequest(request, response);
     }
 
     /**
