@@ -29,9 +29,10 @@
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" style="font-size: 34px" href="index.html"
-               >The NavBar</a
-            >
+            <form action="./noticiasPrincipalControlador" method="GET"> 
+                <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                <input class="nav-brand" style=" font-size: 35px; color: whitesmoke;  border: none; background: none;" type="submit" value="The navbar" name="">                  
+            </form>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -47,9 +48,10 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#"
-                           >Inicio <span class="sr-only">(current)</span></a
-                        >
+                        <form action="./noticiasPrincipalControlador" method="GET"> 
+                            <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                            <input class="nav-link active" style=" border: none; background: none;" type="submit" value="Inicio" name="">                  
+                        </form>
                     </li>
                     <!--             <li class="nav-item">
                             <a class="nav-link" href="#">Link</a>
@@ -110,7 +112,7 @@
                         </a>
                     </li>
                     <li>
-                         <form action="./navNoticiaControlador" method="POST">
+                        <form action="./navNoticiaControlador" method="POST">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Pendientes" name="">                  
                         </form>
@@ -120,7 +122,10 @@
                     %>
                 </ul>
                 <div class="form-inline my-2 my-lg-0">
-                    <h2 style="margin-right: 40px" id="nombreUsuario"><%= usuario.getNombreUsuario()%></h2>
+                    <<form action="./perfilUsuarioControlador" method="GET">
+                        <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                        <input type="submit" style=" border: none; background: none; font-size: 20px; color: whitesmoke;" name="perfil" value="<%= usuario.getNombreUsuario()%>" >
+                    </form>
                     <img
                         class="mr-5"
                         style="border-radius: 30px"
@@ -245,7 +250,7 @@
 
                 <div class="col-lg-6"> 
                     <form action="./editarNoticiaControlador" method="get"  enctype="multipart/form-data" name="editarNoticia">
-                        <input type="hidden" name="autor" value="<%= usuario.getNombreUsuario() %>">
+                        <input type="hidden" name="autor" value="<%= usuario.getNombreUsuario()%>">
                         <label for="idNoticia">Introduzca el Registro para editar</label>
                         <input type="text" name="idNoticia">
                         <input type="submit" name="editar" value="Editar" class="btn btn-primary">
@@ -294,7 +299,7 @@
                         <label for="noticia">Editar noticia</label>
                         <input type="text" name="idNoticia" class="form-group">
                         <% modeloNoticia noticia = noticias.get(1);%>
-                        <input type="hidden" name="autor" value="<%= noticia.getAutor() %>">
+                        <input type="hidden" name="autor" value="<%= noticia.getAutor()%>">
                         <input type="submit" value="Ver" class="btn btn-primary">                        
                     </form>
                 </div>

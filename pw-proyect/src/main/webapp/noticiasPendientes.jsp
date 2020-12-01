@@ -27,9 +27,10 @@
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" style="font-size: 34px" href="index.html"
-               >The NavBar</a
-            >
+            <form action="./noticiasPrincipalControlador" method="GET"> 
+                <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                <input class="nav-brand" style=" font-size: 35px; color: whitesmoke;  border: none; background: none;" type="submit" value="The navbar" name="">                  
+            </form>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -44,11 +45,10 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="#"
-                           >Inicio <span class="sr-only">(current)</span></a
-                        >
-                    </li>
+                    <form action="./noticiasPrincipalControlador" method="GET"> 
+                        <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                        <input class="nav-link active" style=" border: none; background: none;" type="submit" value="Inicio" name="">                  
+                    </form>
                     <!--             <li class="nav-item">
                               <a class="nav-link" href="#">Link</a>
                             </li> -->
@@ -83,7 +83,10 @@
                     </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0">
-                    <h2 style="margin-right: 40px"><%=usuario.getNombreUsuario()%></h2>
+                    <form action="./perfilUsuarioControlador" method="GET">
+                        <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                        <input type="submit" style=" border: none; background: none; font-size: 20px; color: whitesmoke;" name="perfil" value="<%= usuario.getNombreUsuario()%>" >
+                    </form>
                     <img
                         class="mr-5"
                         style="border-radius: 30px"

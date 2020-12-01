@@ -4,6 +4,7 @@
     Author     : mike_
 --%>
 
+<%@page import="com.mycompany.pw.proyect.Modelos.modeloUsuario"%>
 <%@page import="java.util.List"%>
 <%@page import="com.mycompany.pw.proyect.Modelos.modeloNoticia"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -11,6 +12,7 @@
 <%
     List<modeloNoticia> noticias = (List<modeloNoticia>) request.getAttribute("noticias");
     List<modeloNoticia> destacadas = (List<modeloNoticia>) request.getAttribute("destacadas");
+    modeloUsuario usuario = (modeloUsuario) request.getAttribute("usuario");
 
 %>
 <html lang="en">
@@ -27,7 +29,14 @@
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <form action="./noticiasPrincipalControlador" method="GET">                
+            <form action="./noticiasPrincipalControlador" method="GET"> 
+                <%                    
+                    if (usuario != null) {
+                %>
+                <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                <%
+                    }
+                %>
                 <input class="nav-brand" style="font-size: 35px; color: whitesmoke; border: none; background: none;" type="submit" value="The navbar" name="">                  
             </form>
             <button
@@ -45,9 +54,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <form action="./noticiasPrincipalControlador" method="GET">                
-                            <input class="nav-link active" style="border: none; background: none;" type="submit" value="Incio" name="">                  
-                        </form>
+                        <a class="nav-link" href="#"
+                           >Inicio <span class="sr-only">(current)</span></a
+                        >
                     </li>
                     <!--             <li class="nav-item">
                           <a class="nav-link" href="#">Link</a>
@@ -71,16 +80,112 @@
                             <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link disabled"
-                            href="registroUsuarios.jsp"
-                            tabindex="-1"
-                            aria-disabled="true"
-                            >Registrarse</a
-                        >            
+                    <%
+                        if (usuario != null) {
+                            //String rol = "Creador de contenido";
+                            if (usuario.getIdTipoUsuario() == 3) {
+                    %>
+                    <li>
+                        <!--Crear noticias-->
+                        <form action="./navCreadorContenidoControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
+                        </form>
                     </li>
+                    <li>
+                        <a class="nav-link" href="#">
+                            Noticas marcadas<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <!--Moderador-->
+                    <% } else if (usuario.getIdTipoUsuario() == 1) {%>
+                    <li>
+                        <a class="nav-link" href="#">
+                            Noticas marcadas<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <!--Editor-->
+                    <%} else if (usuario.getIdTipoUsuario() == 2) {%>
+                    <li>
+                        <form action="./navCreadorContenidoControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="#">
+                            Noticas marcadas<span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li>
+                        <form action="./navNoticiaControlador" method="POST">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Pendientes" name="">                  
+                        </form>
+                    </li>
+                    <%
+                        }
+                    %>
+                    <%
+                        if (usuario == null) {
+                    %>
+                    <li>
+                        <a href="registroUsuarios.jsp" class="nav-link">
+                            Registrarse
+                        </a>
+                    </li>
+                    <%
+                    } else {
+                    %>
+                    <li>
+                        <a href="registroUsuarios.jsp" class="nav-link">
+                            Cerrar sesíon
+                        </a>
+                    </li>
+                    <%
+                        }
+                    %>
                 </ul>
+                <div class="form-inline my-2 my-lg-0">
+                    <<form action="./perfilUsuarioControlador" method="GET">
+                        <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario() %>">
+                        <input type="submit" style=" border: none; background: none; font-size: 20px; color: whitesmoke;" name="perfil" value="<%= usuario.getNombreUsuario()%>" >
+                    </form>
+                    <img
+                        class="mr-5"
+                        style="border-radius: 30px"
+                        height="80px"
+                        width="80px"
+                        src="<%= usuario.getUrlImage()%>"
+                        alt=""
+                        id="imagenUsuarioSM"
+                        />
+                </div>
+                <%
+                } else if (usuario == null) {
+                %>
+                <li>
+                    <a href="registroUsuarios.jsp" class="nav-link">
+                        Registrarse
+                    </a>
+                </li>
+                </ul>
+                <div class="form-inline my-2 my-lg-0">
+                    <h2 style="margin-right: 40px" id="nombreUsuarioSM">Anonimo</h2>
+                    <img
+                        class="mr-5"
+                        style="border-radius: 30px"
+                        height="80px"
+                        width="80px"
+                        src="assets/UserIcon/usuario.png"
+                        alt=""
+                        id="imagenUsuarioSM"
+                        />
+                </div>
+
+                <%
+                    }
+                %>
             </div>
         </nav>
         <!--Iniciar sesï¿½on a la pagina
@@ -219,7 +324,8 @@
             </div>
             <div class="row mt-lg-5">
                 <div class="col">
-                    <%                        for (modeloNoticia noticia : noticias) {
+                    <%                        
+                        for (modeloNoticia noticia : noticias) {
                     %>
 
                     <div class="card mt-lg-5">
@@ -228,6 +334,13 @@
                             <form action="./verNoticia" method="GET" class="float-left">
                                 <input type="hidden" name="autorNoticia" value="<%= noticia.getAutor()%>">
                                 <input type="hidden" name="idNoticia" value="<%= noticia.getNoticia()%>">
+                                <%
+                                    if(usuario!=null){                                                                            
+                                %>
+                                <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario() %>">                                    
+                                <%
+                                    }
+                                %>
                                 <input type="submit" name="ver" value="Ver" class="btn btn-primary">
                             </form>
                         </div>

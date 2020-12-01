@@ -5,16 +5,10 @@
  */
 package com.mycompany.pw.proyect.Controladores;
 
-import com.mycompany.pw.proyect.Dao.comentarioDao;
-import com.mycompany.pw.proyect.Dao.noticiaDao;
 import com.mycompany.pw.proyect.Dao.usuarioDao;
-import com.mycompany.pw.proyect.Modelos.modeloComentario;
-import com.mycompany.pw.proyect.Modelos.modeloNoticia;
 import com.mycompany.pw.proyect.Modelos.modeloUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,8 +19,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mike_
  */
-@WebServlet(name = "verNoticia", urlPatterns = {"/verNoticia"})
-public class verNoticia extends HttpServlet {
+@WebServlet(name = "perfilUsuarioControlador", urlPatterns = {"/perfilUsuarioControlador"})
+public class perfilUsuarioControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -45,10 +39,10 @@ public class verNoticia extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet verNoticia</title>");            
+//            out.println("<title>Servlet perfilUsuarioControlador</title>");            
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet verNoticia at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet perfilUsuarioControlador at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
@@ -67,38 +61,18 @@ public class verNoticia extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        modeloNoticia noticia = new modeloNoticia();
-        modeloUsuario usuario = new modeloUsuario();
-        List <modeloComentario> comentarios = new ArrayList<>();
+        String usuario = request.getParameter("usuario");
 
-        String idNoticia = request.getParameter("idNoticia");
-        String autor = request.getParameter("autorNoticia");
-        String _usuario = request.getParameter("usuario");
-        
-        if(usuario != null){
-            usuario.setNombreUsuario(_usuario);
-            usuarioDao.buscarUsuario(usuario);
-        }
+        modeloUsuario _usuario = new modeloUsuario();
+        _usuario.setNombreUsuario(usuario);
 
-        int _idNoticia = 0;
-        if (idNoticia != null) {
-            _idNoticia = Integer.parseInt(idNoticia);
-        }
-
-        noticia = noticiaDao.getNoticia(autor, _idNoticia);
-        if (noticia == null) {
+        usuarioDao.buscarUsuario(_usuario);
+        if (_usuario == null) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
         
-        comentarios = comentarioDao.obtenerComentarios(_idNoticia);
-        
-        if(comentarios != null){
-            request.setAttribute("comentarios", comentarios);
-        }
-        
-        request.setAttribute("usuario", usuario);
-        request.setAttribute("noticia", noticia);
-        request.getRequestDispatcher("noticiaCompleta.jsp").forward(request, response);
+        request.setAttribute("usuario", _usuario);
+        request.getRequestDispatcher("perfilUsuario.jsp").forward(request, response);
 
     }
 

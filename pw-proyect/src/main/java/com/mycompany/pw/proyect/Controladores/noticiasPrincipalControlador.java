@@ -6,7 +6,9 @@
 package com.mycompany.pw.proyect.Controladores;
 
 import com.mycompany.pw.proyect.Dao.noticiaDao;
+import com.mycompany.pw.proyect.Dao.usuarioDao;
 import com.mycompany.pw.proyect.Modelos.modeloNoticia;
+import com.mycompany.pw.proyect.Modelos.modeloUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -75,10 +77,19 @@ public class noticiasPrincipalControlador extends HttpServlet {
 
         List<modeloNoticia> noticias = noticiaDao.getPrevNoticia("", 2);
         List<modeloNoticia> noticiasDestacadas = new ArrayList<>();
+        modeloUsuario usuario = null;
+
+        String nombreUsuario = request.getParameter("usuario");
+
+        if (nombreUsuario != null) {
+            usuario = new modeloUsuario();
+            usuario.setNombreUsuario(nombreUsuario);
+            usuarioDao.buscarUsuario(usuario);
+        }
 
         if (noticias == null) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
+        }        
 
         for (int i = 0; i < 3; i++) {
             String autor = noticias.get(i).getAutor();
@@ -86,8 +97,9 @@ public class noticiasPrincipalControlador extends HttpServlet {
             modeloNoticia temp = noticiaDao.getNoticia(autor, idNoticia);
             noticiasDestacadas.add(temp);
         }
-        
-        request.setAttribute("destacadas",noticiasDestacadas);
+
+        request.setAttribute("usuario", usuario);
+        request.setAttribute("destacadas", noticiasDestacadas);
         request.setAttribute("noticias", noticias);
         request.getRequestDispatcher("paginaPrincipal.jsp").forward(request, response);
 

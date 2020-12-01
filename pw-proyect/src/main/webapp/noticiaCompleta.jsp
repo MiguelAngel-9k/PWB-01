@@ -30,8 +30,15 @@
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <form action="./noticiasPrincipalControlador" method="GET">                
-                <input class="nav-brand" style="border: none; background: none;" type="submit" value="The navbar" name="">                  
+            <form action="./noticiasPrincipalControlador" method="GET"> 
+                <%
+                    if (usuario != null) {
+                %>
+                <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                <%
+                    }
+                %>
+                <input class="nav-brand" style=" font-size: 35px; color: whitesmoke;  border: none; background: none;" type="submit" value="The navbar" name="">                  
             </form>
             <button
                 class="navbar-toggler"
@@ -48,8 +55,9 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <form action="./noticiasPrincipalControlador" method="GET">                
-                            <input class="nav-logo" style="border: none; background: none;" type="submit" value="Inicior" name="">                  
+                        <form action="./noticiasPrincipalControlador" method="GET"> 
+                            <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                            <input class="nav-link active" style=" border: none; background: none;" type="submit" value="Inicio" name="">                  
                         </form>
                     </li>
                     <!--             <li class="nav-item">
@@ -113,17 +121,20 @@
                     </li>
                     <li>
                         <!--Mostrar todas las noticias por revisar-->
-                        <<form action="" method="POST">
+                        <<form action="./navCreadorContenidoControlador" method="GET">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
                         </form>
                     </li>
+                    <%
+                        }
+                    %>
                 </ul>
-                <%
-                    }
-                %>
                 <div class="form-inline my-2 my-lg-0">
-                    <h2 style="margin-right: 40px"><%= usuario.getNombreUsuario()%></h2>
+                    <<form action="./perfilUsuarioControlador" method="GET">
+                        <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                        <input type="submit" style=" border: none; background: none; font-size: 20px; color: whitesmoke;" name="perfil" value="<%= usuario.getNombreUsuario()%>" >
+                    </form>
                     <img
                         class="mr-5"
                         style="border-radius: 30px"
@@ -137,8 +148,9 @@
                 <%
                 } else if (usuario == null) {
                 %>
+                </ul>
                 <div class="form-inline my-2 my-lg-0">
-                    <h2 style="margin-right: 40px">Anonimo</h2>
+                    <h2 style="margin-right: 40px"><%= usuario.getNombreUsuario()%></h2>
                     <img
                         class="mr-5"
                         style="border-radius: 30px"
