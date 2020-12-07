@@ -80,9 +80,8 @@ public class respuestaComentarioControlador extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-         List<modeloComentario> comentarios = new ArrayList<>();
+
+        List<modeloComentario> comentarios = new ArrayList<>();
 
         modeloComentario _comentario = new modeloComentario();
         modeloUsuario _usuario = new modeloUsuario();
@@ -92,13 +91,17 @@ public class respuestaComentarioControlador extends HttpServlet {
         String noticia = request.getParameter("noticia");
         String contenido = request.getParameter("comentario");
         String padre = request.getParameter("padre");
+        String autor = request.getParameter("autor");
 
         int idNoticia = 0;
         int idPadre = 0;
 
-        if (noticia != null && padre != null ) {
-            idNoticia = Integer.parseInt(noticia);            
+        if (padre != null) {
             idPadre = Integer.parseInt(padre);
+        }
+
+        if (noticia != null) {
+            idNoticia = Integer.parseInt(noticia);
         }
 
         _comentario.setUsuario(usuario);
@@ -112,14 +115,18 @@ public class respuestaComentarioControlador extends HttpServlet {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
-        _noticia = noticiaDao.getNoticia(usuario, idNoticia);
+        _noticia = noticiaDao.getNoticia(autor, idNoticia);
 
         if (_noticia == null) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
-        if (usuarioDao.buscarUsuario(_usuario) == null) {
-            return;
+        if (!"anonimo".equals(usuario)) {
+            if (usuarioDao.buscarUsuario(_usuario) == null) {
+               _usuario = null;
+            }
+        } else {
+            _usuario = null;
         }
 
         comentarios = comentarioDao.obtenerComentarios(idNoticia);
@@ -132,7 +139,7 @@ public class respuestaComentarioControlador extends HttpServlet {
         request.setAttribute("noticia", _noticia);
         request.setAttribute("usuario", _usuario);
         request.getRequestDispatcher("noticiaCompleta.jsp").forward(request, response);
-        
+
     }
 
     /**

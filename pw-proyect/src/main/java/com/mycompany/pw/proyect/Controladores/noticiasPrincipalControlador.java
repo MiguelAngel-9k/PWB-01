@@ -91,12 +91,12 @@ public class noticiasPrincipalControlador extends HttpServlet {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }        
 
-        for (int i = 0; i < 3; i++) {
-            String autor = noticias.get(i).getAutor();
-            int idNoticia = noticias.get(i).getNoticia();
-            modeloNoticia temp = noticiaDao.getNoticia(autor, idNoticia);
-            noticiasDestacadas.add(temp);
-        }
+//        for (int i = 0; i < 3; i++) {
+//            String autor = noticias.get(i).getAutor();
+//            int idNoticia = noticias.get(i).getNoticia();
+//            modeloNoticia temp = noticiaDao.getNoticia(autor, idNoticia);
+//            noticiasDestacadas.add(temp);
+//        }
 
         request.setAttribute("usuario", usuario);
         request.setAttribute("destacadas", noticiasDestacadas);

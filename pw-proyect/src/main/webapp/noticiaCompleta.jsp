@@ -54,15 +54,22 @@
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <form action="./noticiasPrincipalControlador" method="GET"> 
+                    <li class="nav-item active">                        
+                        <%
+                            if (usuario != null) {
+                        %>
+                        <form action="./noticiasPrincipalControlador" method="GET">                             
                             <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
                             <input class="nav-link active" style=" border: none; background: none;" type="submit" value="Inicio" name="">                  
                         </form>
+                        <%
+                        } else {
+                        %>
+                        <a class="nav-link active" href="paginaPrincipal.jsp">Inicio</a>                        
+                        <%
+                            }
+                        %>
                     </li>
-                    <!--             <li class="nav-item">
-                              <a class="nav-link" href="#">Link</a>
-                            </li> -->
                     <li class="nav-item dropdown">
                         <a
                             class="nav-link dropdown-toggle"
@@ -89,7 +96,7 @@
                     %>
                     <li>
                         <!--Crear noticias-->
-                        <form action="./navNoticiaControlador" method="POST">
+                        <form action="./navCreadorContenidoControlador" method="POST">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
                         </form>
@@ -109,7 +116,7 @@
                     <!--Editor-->
                     <%} else if (usuario.getIdTipoUsuario() == 2) {%>
                     <li>
-                        <form action="./navNoticiaControlador" method="POST">
+                        <form action="./navCreadorContenidoControlador" method="POST">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
                         </form>
@@ -148,9 +155,14 @@
                 <%
                 } else if (usuario == null) {
                 %>
+                <li>
+                    <a class="nav-link" href="registroUsuarios.jsp">
+                        Registrase<span class="sr-only">(current)</span>
+                    </a>
+                </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0">
-                    <h2 style="margin-right: 40px"><%= usuario.getNombreUsuario()%></h2>
+                    <h2 style="margin-right: 40px">Anonimo</h2>
                     <img
                         class="mr-5"
                         style="border-radius: 30px"
@@ -213,6 +225,12 @@
                     </span>
                 </div>
             </div>
+            <div class="row">
+                <div class="col">
+                    <embed width="1080px" height="720px" src="<%= noticia.getVideo() %>">
+                </div>
+            </div>
+
             <!--<div class="row">
                 <div class="col">
                     <div class="card mt-lg-5">
@@ -284,9 +302,20 @@
                                 </div>
                                 <div class="card-body">
                                     <form action="./respuestaComentarioControlador" method="POST" name="agregarRespueta">
-                                        <input type="hidden" name="usuario" value="<%= comentario.getUsuario()%>">
-                                        <input type="hidden" name="noticia" value="<%= noticia.getNoticia()%>">   
-                                        <input type="hidden" name="padre" value="<%= comentario.getIdComentario()%>">
+                                        <%
+                                            if (usuario != null) {
+                                        %>
+                                        <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                                        <%
+                                        } else {
+                                        %>
+                                        <input type="hidden" name="usuario" value="anonimo">
+                                        <%
+                                            }
+                                        %>   
+                                        <input type="hidden" name="padre" value="<%= comentario.getIdComentario()%>">                                        
+                                        <input type="hidden" name="autor" value="<%= noticia.getAutor()%>">
+                                        <input type="hidden" name="noticia" value="<%= noticia.getNoticia()%>">
                                         <textarea name="comentario" class="col"></textarea>
                                         <input type="submit" name="Comentar" value="Enviar" class="btn btn-primary">
                                     </form>
@@ -305,7 +334,7 @@
                 <div class="col">
                     <div class="card">
                         <div class="card-header text-align-center bg-cian">
-                            <h5>Agregar comentario</h5>
+                            <h5>Responder comentario</h5>
                         </div>
                         <div class="card-body">
                             <form action="./comentarControlador" method="POST" name="agregarComentario">
@@ -321,7 +350,8 @@
                                 <input type="hidden" name="noticia" value="<%= noticia.getNoticia()%>">  
                                 <%
                                     }
-                                %>                                
+                                %>             
+                                <input type="hidden" name="autor" value="<%= noticia.getAutor()%>">
                                 <textarea name="comentario" class="col"></textarea>
                                 <input type="submit" name="Comentar" value="Enviar" class="btn btn-primary">
                             </form>

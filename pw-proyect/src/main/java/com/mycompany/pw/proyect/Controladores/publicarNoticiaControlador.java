@@ -32,7 +32,7 @@ import javax.servlet.http.Part;
  * @author mike_
  */
 @WebServlet(name = "publicarNoticiaControlador", urlPatterns = {"/publicarNoticiaControlador"})
-@MultipartConfig(maxFileSize = 1000 * 1000 * 5, maxRequestSize = 1000 * 1000 * 25, fileSizeThreshold = 1000 * 1000)
+@MultipartConfig(maxFileSize = 1024 * 1024 * 5, maxRequestSize = 1024 * 1024 * 25, fileSizeThreshold = 1000 * 1000)
 public class publicarNoticiaControlador extends HttpServlet {
 //
 //    /**
@@ -113,12 +113,15 @@ public class publicarNoticiaControlador extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //obtenemos la informacion del formulario de la noticiam, primero guardamos las imagenes
+        modeloUsuario usuario = new modeloUsuario();
         modeloNoticia noticia = new modeloNoticia();
+
         noticia.setTitulo(request.getParameter("titulo"));
         noticia.setDecripcionCorta(request.getParameter("descripcionCorta"));
         noticia.setContenido(request.getParameter("Contenido"));
         noticia.setCategoria(request.getParameter("categoria"));
         noticia.setAutor(request.getParameter("autor"));
+        usuario.setNombreUsuario(request.getParameter("autor"));
 
         if (noticiaDao.insertarNoticia(noticia) == 0) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
@@ -129,7 +132,9 @@ public class publicarNoticiaControlador extends HttpServlet {
         elementos[0] = "imagenCabecera";
         elementos[1] = "imagenCentral";
         elementos[2] = "imagenFinal";
-        String path = request.getServletContext().getRealPath("");
+        //  /pw-proyect/Web Pages/assets
+        String path = "D:/VSproyects/PWB-01/pw-proyect/src/main/webapp/";
+        //String path = request.getServletContext().getRealPath("");
         File fileSaveDir = new File(path + fileUtils.RUTE_USER_IMAGE);
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
@@ -146,12 +151,38 @@ public class publicarNoticiaControlador extends HttpServlet {
 
         noticia.setImagenes(imagenes);
 
-        //for(int i = 0; i<3; i++)
         if (noticiaDao.setImagenes(noticia, 0) == 0) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
-        };
+        }
 
-        request.setAttribute("prevNoticia", noticia);
+        //insertar el video
+        path = "D:/VSproyects/PWB-01/pw-proyect/src/main/webapp/";
+        fileSaveDir = new File(path + fileUtils.RUTE_USER_VIDEO);
+        if (!fileSaveDir.exists()) {
+            fileSaveDir.mkdir();
+        }
+
+        Part file = request.getPart("video");
+        String contentType = file.getContentType();
+        String nameImage = file.getName() + System.currentTimeMillis() + fileUtils.GetExtension(contentType);
+        String fullPath = path + fileUtils.RUTE_USER_VIDEO + "/" + nameImage;
+        file.write(fullPath);
+        noticia.setVideo(fileUtils.RUTE_USER_VIDEO + "/" + nameImage);
+
+        noticiaDao.setVideo(noticia);
+
+        if (usuarioDao.buscarUsuario(usuario) == null) {
+            return;
+        }
+
+        List<modeloNoticia> noticias = noticiaDao.getPrevNoticia(usuario.getNombreUsuario(), 1);
+        if (noticias == null) {
+            return;
+        }
+
+        request.setAttribute("noticias", noticias);
+        request.setAttribute("usuario", usuario);
+        request.getRequestDispatcher("publicarContenido.jsp").forward(request, response);
 
     }
 

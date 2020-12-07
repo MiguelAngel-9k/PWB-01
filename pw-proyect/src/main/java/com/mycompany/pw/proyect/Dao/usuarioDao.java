@@ -123,7 +123,7 @@ public class usuarioDao {
                 usuario.setIdTipoUsuario(idRolUsuario);
                 usuario.setIdUsuario(idUsuario);                     
             }
-            
+            con.close();
             return usuario;
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());

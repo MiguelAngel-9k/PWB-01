@@ -85,6 +85,7 @@ public class noticiaDao {
     }
 
     public static modeloNoticia getNoticia(String autor, int idNoticia) {
+        modeloNoticia noticias = null;
         try {
             Connection con = conexionDB.getConnection();
             CallableStatement statement = con.prepareCall("call sp_mostrar_noticia(?,?,?)");
@@ -96,29 +97,48 @@ public class noticiaDao {
             String[] imagenes = new String[3];
             int imgPos = 0;
 
+            int _idNoticia = 0;
+            String _titulo = "";
+            String _desc = "";
+            String _contenido = "";
+            String _categoria = "";
+            String _nombreUsuario = "";
+            String _video = "";
+
             while (resultSet.next()) {
-                int _idNoticia = resultSet.getInt("idNoticia");
-                String _titulo = resultSet.getString("titulo");
-                String _desc = resultSet.getString("descripcion");
-                String _contenido = resultSet.getString("contenido");
-                String _categoria = resultSet.getString("categoria");
-                String _nombreUsuario = resultSet.getString("nombreUsuario");
+                _idNoticia = resultSet.getInt("idNoticia");
+                _titulo = resultSet.getString("titulo");
+                _desc = resultSet.getString("descripcion");
+                _contenido = resultSet.getString("contenido");
+                _categoria = resultSet.getString("categoria");
+                _nombreUsuario = resultSet.getString("nombreUsuario");
                 imagenes[imgPos] = resultSet.getString("imagen");
-                String _video = resultSet.getString("video");
-                if (imgPos >= 2) {
-                    modeloNoticia noticias = new modeloNoticia(_titulo, _desc, _contenido, _categoria, _nombreUsuario, _idNoticia, imagenes, _video);
+                if (imgPos >= 2) {                                    
+                    resultSet.next();
+                    _video = resultSet.getString("video");
+                    noticias = new modeloNoticia(_titulo, _desc, _contenido, _categoria, _nombreUsuario, _idNoticia, imagenes, _video);
                     con.close();
                     return noticias;
                 }
                 imgPos++;
             }
 
+            if (imgPos > 0) {
+                noticias = new modeloNoticia(_titulo, _desc, _contenido, _categoria, _nombreUsuario, _idNoticia, imagenes, _video);
+                con.close();
+                return noticias;
+            }
+
         } catch (SQLException ex) {
             System.out.println(ex.getMessage());
             return null;
+        } finally {
+            if (noticias != null) {
+                return noticias;
+            } else {
+                return null;
+            }
         }
-
-        return null;
     }
 
     public static boolean getIdNoticia(modeloNoticia noticia) {
@@ -145,7 +165,9 @@ public class noticiaDao {
     }
 
     public static int setImagenes(modeloNoticia noticia, int posImagen) {
-
+        
+        int filas = 0;
+        
         try {
 
             if (noticiaDao.getIdNoticia(noticia) == false) {
@@ -158,9 +180,8 @@ public class noticiaDao {
                 statement.setString(1, noticia.getImagen(i));
                 statement.setInt(2, noticia.getNoticia());
                 statement.setString(3, "IMG");
-                statement.executeUpdate();
+                filas = statement.executeUpdate();
             }
-            int filas = statement.executeUpdate();
             conn.close();
             return filas;
         } catch (SQLException ex) {
@@ -169,6 +190,28 @@ public class noticiaDao {
 
         }
         return 0;
+    }
+
+    public static boolean setVideo(modeloNoticia noticia) {
+        try {
+            if (noticiaDao.getIdNoticia(noticia) == false) {
+                return false;
+            }
+
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call sp_insertar_video(?,?)");
+
+            statement.setInt(1, noticia.getNoticia());
+            statement.setString(2, noticia.getVideo());
+
+            statement.executeUpdate();
+            conn.close();
+
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
     }
 
     public static boolean aprovarNoticia(int idNoticia, int aprovacion) {
@@ -293,7 +336,7 @@ public class noticiaDao {
             CallableStatement statement = conn.prepareCall("call sp_editar_imagen(?,?,?)");
             statement.setInt(1, idNoticia);
             statement.setString(2, nuevaImagen);
-            statement.setString(2, viejaImagen);
+            statement.setString(3, viejaImagen);
 
             statement.executeUpdate();
             conn.close();
@@ -310,19 +353,17 @@ public class noticiaDao {
             Connection conn = conexionDB.getConnection();
             CallableStatement statement = conn.prepareCall("call sp_noticias_principal()");
             ResultSet resultSet = statement.executeQuery();
-            
-            
-            while(resultSet.next()){
+
+            while (resultSet.next()) {
                 int idNoticia = resultSet.getInt("idNoticia");
                 int aprovacion = resultSet.getInt("aprovacion");
                 String titulo = resultSet.getString("titulo");
                 String descripcion = resultSet.getString("descripcion");
                 String autor = resultSet.getString("nombreUsuario");
-                
+
                 noticias.add(new modeloNoticia(titulo, descripcion, autor, aprovacion, idNoticia));
             }
-            
-            
+
             conn.close();
             return noticias;
         } catch (SQLException ex) {
@@ -330,4 +371,5 @@ public class noticiaDao {
             return null;
         }
     }
+
 }

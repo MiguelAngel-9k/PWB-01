@@ -138,7 +138,8 @@
                 </div>
             </div>
         </nav>
-
+                        
+         <!-- Formato de las noticias -->
         <div class="cotainer">
             <div class="row">
                 <div class="col-lg-5">
@@ -209,11 +210,11 @@
                                         <div class="form-group">
                                             <label for="categoria">Example select</label>
                                             <select class="form-control" id="categoria" name="categoria">
+                                                <option>tarjetas graficas</option>
+                                                <option>amd</option>
+                                                <option>intel</option>
+                                                <option>celulares</option>
                                                 <option>juegos</option>
-                                                <option>Hardware</option>
-                                                <option>Software</option>
-                                                <option>Consoles</option>
-                                                <option>Brands</option>
                                             </select>
                                         </div>
                                         <div class="form-group">
@@ -237,6 +238,14 @@
                                         <div>
                                             <label for="autor">Nombre del autor</label><br/>
                                             <input name="autor" class="mt-1 mb-2" type="text" readonly style="border: none; font-weight: bold;" value="<%= usuario.getNombreUsuario()%>"/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="video">Video</label>
+                                            <input
+                                                type="file"    
+                                                class="form-control btn btn-danger"
+                                                name="video"
+                                                />
                                         </div>
                                         <button id="enivarEditor" class="btn btn-danger">
                                             Enviar al editor

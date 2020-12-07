@@ -26,7 +26,7 @@
             integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
             crossorigin="anonymous"
             />
-        <title>Document</title>
+        <title>Editar Noticia</title>
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -102,7 +102,7 @@
 
         <div class="cotainer m-0">
             <div class="row">
-                <div class="col">
+                <div class="col-lg-6">
                     <div
                         class="accordion"
                         style="width: 60%; transform: translate(25%); margin-top: 5%"
@@ -250,6 +250,11 @@
                                     </form>
                                     <form action="./editarImagenNoticiaControlador" method="POST" enctype="multipart/form-data">
                                         <div class="form-group">
+                                            <input
+                                                type="text"
+                                                name="idNoticiaImagen"
+                                                value="<%= noticia.getNoticia()%>"                                                
+                                                />
                                             <label for="Cebcera"
                                                    >Cambiar Imagen para el titulo</label
                                             >
@@ -282,7 +287,7 @@
                                             <input
                                                 type="hidden"
                                                 name="imagenFinal"
-                                                value="<%= noticia.getImagen(0)%>"
+                                                value="<%= noticia.getImagen(2)%>"
                                                 >
                                             <input
                                                 type="file"
@@ -290,21 +295,49 @@
                                                 id="CambiarImagenFinal"
                                                 name="Final"
                                                 />
-                                            <input
-                                                type="submit"
-                                                name="editarImagen"
-                                                value="Editar"
-                                                class="btn btn-primary mt-lg-3"
-                                                />  
-                                        </div>                                           
+                                        </div>
+                                        <input
+                                            type="submit"
+                                            name="editarImagen"
+                                            value="Editar"
+                                            class="btn btn-primary mt-lg-3"
+                                            />
                                     </form>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </div> 
+                <div class="col-lg-6">
+                    <h3>Editar imagenes</h3>
+                    <form action="./editarImagenNoticiaControlador" method="POST" enctype="multipart/form-data">
+                        <input type="hidden" name="idNoticiaImagen" value="<%= noticia.getNoticia()%>">                        
+                        <input type="hidden" name="autor" value="<%= noticia.getAutor()%>">                        
+                        <div class="form-group pr-lg-5">
+                            <p>Imagen de cabecera</p>
+                            <img height="100px" width="100px" src="<%= noticia.getImagen(0)%>" alt="Imagen Cabecera">
+                            <input type="hidden" name="imagenCabecera" value="<%= noticia.getImagen(0)%>">
+                            <input type="file" name="Cabecera" class="form-control-file btn btn-danger">                        
+                        </div>
+                        <div class="form-group pr-lg-5">
+                            <p>Imagen de Central</p>
+                            <img height="100px" width="100px" src="<%= noticia.getImagen(1)%>" alt="Imagen Central">
+                            <input type="hidden" name="imagenCentral" value="<%= noticia.getImagen(1)%>">                       
+                            <input type="file" name="Central" class="form-control-file btn btn-danger">                        
+                        </div>
+                        <div class="form-group pr-lg-5">
+                            <p>Imgagen Final</p>
+                            <img height="100px" width="100px" src="<%= noticia.getImagen(2)%>" alt="Imagen Central">
+                            <input type="hidden" name="imagenFinal" value="<%= noticia.getImagen(2)%>">                       
+                            <input type="file" name="Final" class="form-control-file btn btn-danger">                        
+
+                        </div>                            
+                        <input type="submit" class="btn btn-danger" value="Guardar">
+                    </form>
                 </div>
             </div>
         </div>
+
     </body>
     <script
         src="https://code.jquery.com/jquery-3.5.1.slim.min.js"

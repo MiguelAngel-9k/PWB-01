@@ -91,6 +91,7 @@ public class comentarControlador extends HttpServlet {
         String usuario = request.getParameter("usuario");
         String noticia = request.getParameter("noticia");
         String contenido = request.getParameter("comentario");
+        String autor = request.getParameter("autor");
 
         int idNoticia = 0;
 
@@ -108,14 +109,18 @@ public class comentarControlador extends HttpServlet {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
-        _noticia = noticiaDao.getNoticia(usuario, idNoticia);
+        _noticia = noticiaDao.getNoticia(autor, idNoticia);
 
-        if (_noticia == null && usuario != "anonimo") {
+        if (_noticia == null) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
-        if (usuarioDao.buscarUsuario(_usuario) == null) {
-            return;
+        if (!"anonimo".equals(usuario)) {
+            if (usuarioDao.buscarUsuario(_usuario) == null) {
+                _usuario = null;
+            }
+        } else {
+            _usuario = null;
         }
 
         comentarios = comentarioDao.obtenerComentarios(idNoticia);

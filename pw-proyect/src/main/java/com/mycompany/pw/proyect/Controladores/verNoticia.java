@@ -68,14 +68,16 @@ public class verNoticia extends HttpServlet {
             throws ServletException, IOException {
 
         modeloNoticia noticia = new modeloNoticia();
-        modeloUsuario usuario = new modeloUsuario();
+        modeloUsuario usuario = null;
+        modeloUsuario test = null;
         List <modeloComentario> comentarios = new ArrayList<>();
 
         String idNoticia = request.getParameter("idNoticia");
         String autor = request.getParameter("autorNoticia");
         String _usuario = request.getParameter("usuario");
         
-        if(usuario != null){
+        if(_usuario != null){
+            usuario = new modeloUsuario();
             usuario.setNombreUsuario(_usuario);
             usuarioDao.buscarUsuario(usuario);
         }
