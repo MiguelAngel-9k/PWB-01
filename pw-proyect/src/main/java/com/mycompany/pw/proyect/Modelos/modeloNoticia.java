@@ -70,6 +70,13 @@ public class modeloNoticia {
         this.noticia = noticia;
     }
 
+    public modeloNoticia(String titulo, String decripcionCorta, String autor, int noticia) {
+        this.titulo = titulo;
+        this.decripcionCorta = decripcionCorta;
+        this.autor = autor;
+        this.noticia = noticia;
+    }
+
     
 
     public String getTitulo() {

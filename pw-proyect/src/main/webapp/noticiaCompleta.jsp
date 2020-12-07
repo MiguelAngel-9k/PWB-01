@@ -20,6 +20,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <script src="https://kit.fontawesome.com/d11ab77a4f.js" crossorigin="anonymous"></script>
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
@@ -179,6 +180,7 @@
             </div>
         </nav>
 
+        <!--La noticia-->
         <div class="container">
             <div class="row mt-5">
                 <div class="col-lg-5">
@@ -192,6 +194,18 @@
                 <div class="col-lg-6">
                     <h1><%= noticia.getTitulo()%></h1>
                     <p style="font-weight: bold"><%= noticia.getDecripcionCorta()%></p>
+                </div>
+                <div class="col-lg-1">      
+                    <% if (usuario != null) {%>
+                    <form action="./listaFavoritasControlador" method="POST">
+                        <input type="hidden"  name="idNoticia" value="<%= noticia.getNoticia()%>"/>                        
+                        <input type="hidden"  name="idUsuario" value="<%= usuario.getIdUsuario()%>"/>                        
+                        <input type="hidden"  name="nombreUsuario" value="<%= usuario.getNombreUsuario()%>"/>                        
+                        <button style="border: 2px solid red ; border-radius: 50px;  background: none;" ><i class="far fa-heart"></i></button>    
+                    </form>
+                    <%
+                        }
+                    %>
                 </div>
             </div>
             <div class="row mt-lg-4">
@@ -227,7 +241,7 @@
             </div>
             <div class="row">
                 <div class="col">
-                    <embed width="1080px" height="720px" src="<%= noticia.getVideo() %>">
+                    <embed width="1080px" height="720px" src="<%= noticia.getVideo()%>">
                 </div>
             </div>
 
@@ -249,6 +263,7 @@
                     </div>
                 </div>
             </div>    -->
+            <!--Comentarios-->
             <div class="row">
                 <div class="col mt-lg-5">
                     <!-- <form action="" method="post">

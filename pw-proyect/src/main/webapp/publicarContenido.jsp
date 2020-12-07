@@ -87,9 +87,10 @@
                         </form>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticas marcadas<span class="sr-only">(current)</span>
-                        </a>
+                       <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
                     </li>
                     <!--Moderador-->
                     <% } else if (usuario.getIdTipoUsuario() == 1) {%>
@@ -107,9 +108,13 @@
                         </form>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
+                       <!-- <a class="nav-link" href="#">
                             Noticas marcadas<span class="sr-only">(current)</span>
-                        </a>
+                        </a>-->
                     </li>
                     <li>
                         <form action="./navNoticiaControlador" method="POST">
@@ -138,8 +143,8 @@
                 </div>
             </div>
         </nav>
-                        
-         <!-- Formato de las noticias -->
+
+        <!-- Formato de las noticias -->
         <div class="cotainer">
             <div class="row">
                 <div class="col-lg-5">
@@ -304,7 +309,7 @@
                             }
                         %>   
                     </table>
-                    <<form action="./editarNoticiaControlador" method="GET">
+                    <form action="./editarNoticiaControlador" method="GET">
                         <label for="noticia">Editar noticia</label>
                         <input type="text" name="idNoticia" class="form-group">
                         <% modeloNoticia noticia = noticias.get(1);%>

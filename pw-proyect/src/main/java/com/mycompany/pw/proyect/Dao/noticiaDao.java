@@ -113,7 +113,7 @@ public class noticiaDao {
                 _categoria = resultSet.getString("categoria");
                 _nombreUsuario = resultSet.getString("nombreUsuario");
                 imagenes[imgPos] = resultSet.getString("imagen");
-                if (imgPos >= 2) {                                    
+                if (imgPos >= 2) {
                     resultSet.next();
                     _video = resultSet.getString("video");
                     noticias = new modeloNoticia(_titulo, _desc, _contenido, _categoria, _nombreUsuario, _idNoticia, imagenes, _video);
@@ -165,9 +165,9 @@ public class noticiaDao {
     }
 
     public static int setImagenes(modeloNoticia noticia, int posImagen) {
-        
+
         int filas = 0;
-        
+
         try {
 
             if (noticiaDao.getIdNoticia(noticia) == false) {
@@ -372,4 +372,46 @@ public class noticiaDao {
         }
     }
 
+    public static List<modeloNoticia> favoritos(String usuario) {
+        List<modeloNoticia> favoritas = new ArrayList<>();
+        try {
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call sp_mostrar_favoritos(?)");
+            statement.setString(1, usuario);
+
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+
+                int idNoticia = resultSet.getInt("idNoticia");
+                String Titulo = resultSet.getString("Titulo");
+                String Desc = resultSet.getString("Descripcion");
+                String autor = resultSet.getString("Autor");
+
+                favoritas.add(new modeloNoticia(Titulo, Desc, autor, idNoticia));
+            }
+
+            return favoritas;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return null;
+        }
+    }
+
+    public static boolean insertarfavoritos(int idUsuario, int idNoticia) {
+        try {
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call sp_marcar_favorito(?,?)");
+            statement.setInt(1, idNoticia);
+            statement.setInt(2, idUsuario);
+            
+            statement.executeUpdate();
+            conn.close();
+            return true;
+
+        } catch(SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+
+    }
 }
