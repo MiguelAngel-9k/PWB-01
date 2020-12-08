@@ -133,6 +133,7 @@ mike_ --%>
                                 class="form-control"
                                 id="nombre"
                                 name="nombre"
+                                required
                                 />
                         </div>
                         <div class="form-group">
@@ -149,9 +150,10 @@ mike_ --%>
                             <input type="text" class="form-control" id="RedSocial" name="RedSocial" />
                         </div>
                         <div class="form-group">
-                            <select class="form-control" id="rolUsuario" name="rolUsuario">
+                            <select class="form-control" id="rolUsuario" name="rolUsuario" required>
                                 <option>Creador de contenido</option>
                                 <option>Moderador</option>
+                                <option>Registrado</option>
                             </select>
                         </div>
                     </div>
@@ -164,18 +166,21 @@ mike_ --%>
                                 id="email"
                                 name="email"
                                 aria-describedby="emailHelp"
+                                required
                                 />
                             <small id="emailHelp" class="form-text text-muted"
                                    >No se compartira esta informaciï¿½n con nadie mas.</small
                             >
                         </div>
                         <div class="form-group">
-                            <label for="password">Contraseï¿½a</label>
+                            <label for="password">Contraseña</label>
                             <input
                                 type="password"
                                 class="form-control"
                                 id="password"
                                 name="password"
+                                required
+                                minlength="8"
                                 />
                         </div>
                         <div class="form-group">
@@ -185,6 +190,8 @@ mike_ --%>
                                 class="form-control"
                                 id="nombreUsuario"
                                 name="nombreUsuario"
+                                required
+                                minlength="3"
                                 />
                         </div>
                         <div class="form-group">

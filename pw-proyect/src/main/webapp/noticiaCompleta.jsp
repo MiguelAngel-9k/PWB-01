@@ -116,9 +116,14 @@
                     <!--Moderador-->
                     <% } else if (usuario.getIdTipoUsuario() == 1) {%>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticas marcadas<span class="sr-only">(current)</span>
-                        </a>
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
                     </li>
                     <!--Editor-->
                     <%} else if (usuario.getIdTipoUsuario() == 2) {%>
@@ -320,7 +325,25 @@
                     <div class="media">
                         <img style="max-height: 64px; max-height: 64px" src="<%= comentario.getImgUsuario()%>" class="mr-3" alt="Foto de perfil del usuario">
                         <div class="media-body">
-                            <h5 class="mt-0"><%= comentario.getUsuario()%></h5>
+                            <h5 class="mt-0"><%= comentario.getUsuario()%>
+                                <%
+                                    if (usuario != null) {
+                                        if (usuario.getIdTipoUsuario() == 1) {
+                                %>
+                                <span>
+                                    <form action="./eliminarComentarioControlador" method="POST">
+                                        <input type="hidden" name="idComentario" value="<%= comentario.getIdComentario() %>">
+                                        <input type="hidden" name="idNoticia" value="<%= noticia.getNoticia() %>">
+                                        <input type="hidden" name="autorNoticia" value="<%= noticia.getAutor() %>">
+                                        <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario() %>">
+                                        <input class="float-right" type="submit" value=" Eliminar" class="btn btn-danger" >
+                                    </form>
+                                </span>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </h5>
                             <%= comentario.getContenido()%>
                             <%
                                 for (modeloComentario respuesta : comentarios) {
@@ -369,7 +392,8 @@
                     <%
                                 }
                             }
-                        };
+                        }
+                        ;
                     %>
                 </div>
             </div>     
@@ -382,12 +406,18 @@
                         <div class="card-body">
                             <form action="./comentarControlador" method="POST" name="agregarComentario">
                                 <%
-                                    if (usuario != null) {
+                                    if (usuario
+
+                                    
+                                        != null) {
                                 %>
                                 <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
                                 <input type="hidden" name="noticia" value="<%= noticia.getNoticia()%>">  
                                 <%
-                                } else {
+                                    }
+
+                                    
+                                        else {
                                 %>
                                 <input type="hidden" name="usuario" value="anonimo">
                                 <input type="hidden" name="noticia" value="<%= noticia.getNoticia()%>">  

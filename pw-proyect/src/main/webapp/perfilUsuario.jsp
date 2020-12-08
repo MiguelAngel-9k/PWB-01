@@ -111,9 +111,15 @@
                     <!--Moderador-->
                     <% } else if (usuario.getIdTipoUsuario() == 1) {%>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticas marcadas<span class="sr-only">(current)</span>
-                        </a>
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
+                    </li>
                     </li>
                     <!--Editor-->
                     <%} else if (usuario.getIdTipoUsuario() == 2) {%>
@@ -222,9 +228,9 @@
                                 <p style="font-size: 30px" id="correo">
                                     <%=usuario.getCorreo()%>
                                 </p>
-                                <p style="font-size: 30px" id="contacto">
-                                    <%=usuario.getrSocial()%>
-                                </p>
+                                <a  class="nav-link" style="font-size: 30px" id="contacto" href=" <%=usuario.getrSocial()%>">
+                                   Contacto
+                                </a>
                                 <input
                                     style="display: none"
                                     type="text"

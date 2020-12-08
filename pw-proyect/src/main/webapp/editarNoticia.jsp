@@ -30,9 +30,10 @@
     </head>
     <body class="bg-light">
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" style="font-size: 34px" href="index.html"
-               >The NavBar</a
-            >
+            <form action="./noticiasPrincipalControlador" method="GET"> 
+                <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                <input class="nav-brand" style=" font-size: 35px; color: whitesmoke;  border: none; background: none;" type="submit" value="The navbar" name="">                  
+            </form>
             <button
                 class="navbar-toggler"
                 type="button"
@@ -48,13 +49,14 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="#"
-                           >Inicio <span class="sr-only">(current)</span></a
-                        >
+                        <form action="./noticiasPrincipalControlador" method="GET"> 
+                            <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                            <input class="nav-link active" style=" border: none; background: none;" type="submit" value="Inicio" name="">                  
+                        </form>
                     </li>
                     <!--             <li class="nav-item">
-                              <a class="nav-link" href="#">Link</a>
-                            </li> -->
+                          <a class="nav-link" href="#">Link</a>
+                        </li> -->
                     <li class="nav-item dropdown">
                         <a
                             class="nav-link dropdown-toggle"
@@ -74,17 +76,74 @@
                             <a class="dropdown-item" href="#">Something else here</a>
                         </div>
                     </li>
+                    <%
+                        if (usuario != null) {
+                            //String rol = "Creador de contenido";
+                            if (usuario.getIdTipoUsuario() == 3) {
+                    %>
                     <li>
-                       <form action="./listaFavoritasControlador" method="GET">
+                        <!--Crear noticias-->
+                        <form action="./navCreadorContenidoControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <form action="./listaFavoritasControlador" method="GET">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
                         </form>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticias pendientes<span class="sr-only">(current)</span>
-                        </a>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
                     </li>
+                    <!--Moderador-->
+                    <% } else if (usuario.getIdTipoUsuario() == 1) {%>
+                    <li>
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
+                    </li>
+                    </li>
+                    <!--Editor-->
+                    <%} else if (usuario.getIdTipoUsuario() == 2) {%>
+                    <li>
+                        <form action="./navCreadorContenidoControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <form action="./navNoticiaControlador" method="POST">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Pendientes" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
+                    </li>
+                    <%
+                    } else if (usuario.getIdTipoUsuario() == 5) {
+                    %>
+                    <form action="./listaFavoritasControlador" method="GET">
+                        <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                        <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                    </form>
                     <li>
                         <form action="./CierreDeSesion" method="POST">                            
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
@@ -92,7 +151,10 @@
                     </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0">
-                    <h2 style="margin-right: 40px"><%=usuario.getNombreUsuario()%></h2>
+                    <form action="./perfilUsuarioControlador" method="GET">
+                        <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
+                        <input type="submit" style=" border: none; background: none; font-size: 20px; color: whitesmoke;" name="perfil" value="<%= usuario.getNombreUsuario()%>" >
+                    </form>
                     <img
                         class="mr-5"
                         style="border-radius: 30px"
@@ -103,6 +165,10 @@
                         id="imagenUsuarioSM"
                         />
                 </div>
+                <%
+                        }
+                    }
+                %>
             </div>
         </nav>
 
@@ -254,7 +320,7 @@
                                             class="btn btn-primary mt-lg-3"
                                             />
                                     </form>
-                                    <form action="./editarImagenNoticiaControlador" method="POST" enctype="multipart/form-data">
+                                    <!--<form action="./editarImagenNoticiaControlador" method="POST" enctype="multipart/form-data">
                                         <div class="form-group">
                                             <input
                                                 type="text"
@@ -308,7 +374,7 @@
                                             value="Editar"
                                             class="btn btn-primary mt-lg-3"
                                             />
-                                    </form>
+                                    </form>-->
                                 </div>
                             </div>
                         </div>

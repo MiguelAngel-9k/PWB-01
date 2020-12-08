@@ -97,9 +97,14 @@
                     <!--Moderador-->
                     <% } else if (usuario.getIdTipoUsuario() == 1) {%>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticas marcadas<span class="sr-only">(current)</span>
-                        </a>
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
                     </li>
                     <!--Editor-->
                     <%} else if (usuario.getIdTipoUsuario() == 2) {%>
@@ -156,6 +161,9 @@
         <div class="container">
             <div class="row">
                 <div class="col">
+                    <%
+                        if(noticias != null){
+                    %>
                     <table class="table mt-lg-5">
                         <thead  class="thead-dark">
                             <tr>
@@ -167,8 +175,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <%
-                                for (modeloNoticia noticia : noticias) {
+                            <%                              
+                                    for (modeloNoticia noticia : noticias) {
                             %>
                             <tr>          
                         <form action="./verNoticia" method="GET">
@@ -189,6 +197,17 @@
                             <th scope="row"><input type="submit" value="Quitar" class="btn btn-danger"></th>
                         </form>
                         </tr>
+                        <%
+                                }
+                            }else{
+                        %>
+                        
+                        <h1>
+                            No hay noticias en tu lista!
+                        </h1>
+                        <small>
+                            Puedes dar clik en el corazon a lado del titulo
+                        </small>                        
                         <%
                             }
                         %>

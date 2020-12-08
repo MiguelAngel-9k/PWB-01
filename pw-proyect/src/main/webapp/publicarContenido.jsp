@@ -308,9 +308,9 @@
                             <th scope="row">
                                 <input type="submit" value="Ver" class="btn btn-primary">
                             </th>      
-                            <th>
+                            <!--<th>
                                 <a href="/editarNoticiaControlador?idNoticia=<%= noticia.getNoticia()%>&autorNoticia=<%= noticia.getAutor()%>" class="btn btn-secondary">Editar</a>
-                            </th>
+                            </th>-->
                         </form>
 
                         </tr>
@@ -319,13 +319,13 @@
                             }
                         %>   
                     </table>
-                    <form action="./editarNoticiaControlador" method="GET">
+                    <!--<form action="./editarNoticiaControlador" method="GET">
                         <label for="noticia">Editar noticia</label>
                         <input type="text" name="idNoticia" class="form-group">
                         <% modeloNoticia noticia = noticias.get(1);%>
                         <input type="hidden" name="autor" value="<%= noticia.getAutor()%>">
                         <input type="submit" value="Ver" class="btn btn-primary">                        
-                    </form>
+                    </form>-->
                 </div>
             </div>
             <script

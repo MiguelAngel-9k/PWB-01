@@ -83,24 +83,46 @@ public class registrarseControlador extends HttpServlet {
         String email = request.getParameter("email");
         String contrasenia = request.getParameter("password");
         String nombreUsuario = request.getParameter("nombreUsuario");
-        String path = request.getServletContext().getRealPath("");
+        String path = "D:/VSproyects/PWB-01/pw-proyect/src/main/webapp/";
         File fileSaveDir = new File(path + fileUtils.RUTE_USER_IMAGE);
         if (!fileSaveDir.exists()) {
             fileSaveDir.mkdir();
         }
         Part file = request.getPart("imagen");
-        String contentType = file.getContentType();
-        String nameImage = file.getName() + System.currentTimeMillis() + fileUtils.GetExtension(contentType);
-        String fullPath = path + fileUtils.RUTE_USER_IMAGE + "/" + nameImage;
-        file.write(fullPath);
-        modeloUsuario usuario = new modeloUsuario(nombre, apellidos, email, contrasenia, nombreUsuario, fileUtils.RUTE_USER_IMAGE + "/" + nameImage, rolUsuario, redSocial);
-        if (usuarioDao.insertarUsuario(usuario) == 1) {
-            request.setAttribute("usuario", usuario);
-            // Enviamos el request a index.jsp con la informacion        
-            request.getRequestDispatcher("perfilUsuario.jsp").forward(request, response);
+        if ("application/octet-stream".equals(file.getContentType())) {
+            modeloUsuario usuario = new modeloUsuario(nombre, apellidos, email, contrasenia, nombreUsuario, "assets/UserIcon/usuario.png", rolUsuario, redSocial);
+            if (usuarioDao.insertarUsuario(usuario) == 1) {
+                request.setAttribute("usuario", usuario);
+                // Enviamos el request a index.jsp con la informacion  
+                usuarioDao.buscarUsuario(usuario);
+                if (usuario != null) {
+                    request.getRequestDispatcher("perfilUsuario.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("fail.jsp").forward(request, response);
+                }
 
+            } else {
+                request.getRequestDispatcher("fail.jsp").forward(request, response);
+            }
         } else {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
+            String contentType = file.getContentType();
+            String nameImage = file.getName() + System.currentTimeMillis() + fileUtils.GetExtension(contentType);
+            String fullPath = path + fileUtils.RUTE_USER_IMAGE + "/" + nameImage;
+            file.write(fullPath);
+            modeloUsuario usuario = new modeloUsuario(nombre, apellidos, email, contrasenia, nombreUsuario, fileUtils.RUTE_USER_IMAGE + "/" + nameImage, rolUsuario, redSocial);
+            if (usuarioDao.insertarUsuario(usuario) == 1) {
+                request.setAttribute("usuario", usuario);
+                // Enviamos el request a index.jsp con la informacion  
+                usuarioDao.buscarUsuario(usuario);
+                if (usuario != null) {
+                    request.getRequestDispatcher("perfilUsuario.jsp").forward(request, response);
+                } else {
+                    request.getRequestDispatcher("fail.jsp").forward(request, response);
+                }
+
+            } else {
+                request.getRequestDispatcher("fail.jsp").forward(request, response);
+            }
         }
     }
 

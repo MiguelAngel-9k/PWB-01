@@ -87,5 +87,22 @@ public class comentarioDao {
             return null;
         }
     }
+    
+    public static boolean eliminarComentario(int comentario){
+        try {
+            
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call sp_eliminar_comentario(?)");
+            statement.setInt(1, comentario);
+            
+            statement.executeUpdate();
+            conn.close();            
+            
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
 
 }
