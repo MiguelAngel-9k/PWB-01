@@ -209,134 +209,6 @@
                 %>
             </div>
         </nav>
-        <!--Iniciar sesï¿½on a la pagina
-        <form action="./registrarseControlador" method="GET" class="form-inline my-2 my-lg-0">
-            <input
-                class="form-control mr-sm-2"
-                type="text"
-                placeholder="Nombre de usuario"
-                id="INnombreUsuario"
-                name="INnombreUsuario"
-                />
-            <input
-                class="form-control mr-sm-2"
-                type="password"
-                placeholder="Contraseña"
-                id="INcontrasenia"
-                name="INcontrasenia"
-                />
-            <button class="btn btn-danger my-2 my-sm-0" type="submit">
-                Iniciar sesión
-            </button>
-        </form>
-    </div>
-</nav>
-
-<div class="container">
-    <div class="row mt-lg-5">
-        <div class="col">
-            <h1>Noticias destacadas</h1>
-        </div>
-    </div>
-        <!--<div class="row mt-lg-5">
-            <div class="col">
-                <div
-                    id="carouselExampleIndicators"
-                    class="carousel slide"
-                    data-ride="carousel"
-                    >
-                    <ol class="carousel-indicators">
-                        <li
-                            data-target="#carouselExampleIndicators"
-                            data-slide-to="0"
-                            class="active"
-                            ></li>
-                        <li
-                            data-target="#carouselExampleIndicators"
-                            data-slide-to="1"
-                            ></li>
-                        <li
-                            data-target="#carouselExampleIndicators"
-                            data-slide-to="2"
-                            ></li>
-                    </ol>
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-        <!--<img class="d-block w-100" src="img/uno.png" alt="First slide" />
-        <div class="card" style="width: 65em">
-            <div class="card-header">
-                <h2></h2>
-            </div>
-            <img
-                class="card-img-top"
-                src=""
-                alt="Card image cap"
-                />
-            <div class="card-body">
-                <p class="card-text">
-                    
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="carousel-item">
-        <div class="card" style="width: 65em">
-            <div class="card-header">
-                <h2></h2>
-            </div>
-            <img
-                src="g"
-                alt="segunda noticia destacada"
-                class="card-img-top"
-                />
-            <div class="card-body">
-                <p></p>
-            </div>
-        </div>
-    </div>
-        <!--<div class="carousel-item">
-            <div class="card" style="width: 65em">
-                <div class="card-header">
-                    <h2></h2>
-                </div>
-                <img
-                    src=""
-                    alt="segunda noticia destacada"
-                    class="card-img-top"
-                    />
-                <div class="card-body">
-                    <p></p>
-                </div>
-            </div>
-        </div>
-    </div>
-    <a
-        class="carousel-control-prev"
-        href="#carouselExampleIndicators"
-        role="button"
-        data-slide="prev"
-        >
-        <span
-            class="carousel-control-prev-icon"
-            aria-hidden="true"
-            ></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a
-        class="carousel-control-next"
-        href="#carouselExampleIndicators"
-        role="button"
-        data-slide="next"
-        >
-        <span
-            class="carousel-control-next-icon"
-            aria-hidden="true"
-            ></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
-</div>
-</div>-->
         <div class="container">
             <div class="row mt-lg-5">
                 <div class="col">
@@ -347,6 +219,7 @@
                 <div class="col">
                     <%
                         for (modeloNoticia noticia : noticias) {
+                            if (noticia.getAprovacion() == 1) {
                     %>
 
                     <div class="card mt-lg-5">
@@ -378,6 +251,7 @@
                         </div>
                     </div>-->
                     <%
+                            }
                         };
                     %>
                 </div>
