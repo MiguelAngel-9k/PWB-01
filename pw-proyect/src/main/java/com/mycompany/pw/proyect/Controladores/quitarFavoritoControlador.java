@@ -5,17 +5,13 @@
  */
 package com.mycompany.pw.proyect.Controladores;
 
-import com.mycompany.pw.proyect.Dao.comentarioDao;
 import com.mycompany.pw.proyect.Dao.noticiaDao;
 import com.mycompany.pw.proyect.Dao.usuarioDao;
-import com.mycompany.pw.proyect.Modelos.modeloComentario;
 import com.mycompany.pw.proyect.Modelos.modeloNoticia;
 import com.mycompany.pw.proyect.Modelos.modeloUsuario;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -26,8 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author mike_
  */
-@WebServlet(name = "listaFavoritasControlador", urlPatterns = {"/listaFavoritasControlador"})
-public class listaFavoritasControlador extends HttpServlet {
+@WebServlet(name = "quitarFavoritoControlador", urlPatterns = {"/quitarFavoritoControlador"})
+public class quitarFavoritoControlador extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -46,10 +42,10 @@ public class listaFavoritasControlador extends HttpServlet {
 //            out.println("<!DOCTYPE html>");
 //            out.println("<html>");
 //            out.println("<head>");
-//            out.println("<title>Servlet listaFavoritasControlador</title>");            
+//            out.println("<title>Servlet quitarFavoritoControlador</title>");            
 //            out.println("</head>");
 //            out.println("<body>");
-//            out.println("<h1>Servlet listaFavoritasControlador at " + request.getContextPath() + "</h1>");
+//            out.println("<h1>Servlet quitarFavoritoControlador at " + request.getContextPath() + "</h1>");
 //            out.println("</body>");
 //            out.println("</html>");
 //        }
@@ -67,26 +63,7 @@ public class listaFavoritasControlador extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        String _usuario = request.getParameter("getName");
-
-        List<modeloNoticia> favs = noticiaDao.favoritos(_usuario);
-        modeloUsuario usuario = new modeloUsuario();
-        usuario.setNombreUsuario(_usuario);
-
-        if (favs == null) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        usuarioDao.buscarUsuario(usuario);
-        if (usuario == null) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        request.setAttribute("usuario", usuario);
-        request.setAttribute("noticias", favs);
-        request.getRequestDispatcher("favoritas.jsp").forward(request, response);
-
+        processRequest(request, response);
     }
 
     /**
@@ -101,55 +78,38 @@ public class listaFavoritasControlador extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        modeloUsuario usuarioActial = new modeloUsuario();
-        modeloNoticia noticiaActual = null;
-        List<modeloComentario> comentarios = null;
+        modeloUsuario usuarioActual = new modeloUsuario();
 
-        String idUsuario = request.getParameter("idUsuario");
+        String usuario = request.getParameter("usuario");
         String idNoticia = request.getParameter("idNoticia");
-        String nombreUsuario = request.getParameter("nombreUsuario");
-        String autor = request.getParameter("nombreAutor");
+
+        usuarioActual.setNombreUsuario(usuario);
 
         int _idNoticia = 0;
-        int _idUsuario = 0;
 
-        if (idUsuario != null) {
-            _idUsuario = Integer.parseInt(idUsuario);
-        } else {
+        if (idNoticia == null) {
             return;
-        }
-
-        if (idNoticia != null) {
+        } else {
             _idNoticia = Integer.parseInt(idNoticia);
-        } else {
-            return;
         }
 
-        if (!noticiaDao.insertarfavoritos(_idUsuario, _idNoticia)) {
+        if (!noticiaDao.quitFavoritos(_idNoticia, usuario)) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
-        usuarioActial.setNombreUsuario(nombreUsuario);
-        usuarioDao.buscarUsuario(usuarioActial);
-        if (nombreUsuario == null) {
+        usuarioDao.buscarUsuario(usuarioActual);
+        if (usuarioActual == null) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
-        noticiaActual = noticiaDao.getNoticia(autor, _idNoticia);
-        if (noticiaActual == null) {
+        List<modeloNoticia> favs = noticiaDao.favoritos(usuario);
+        if (favs == null) {
             request.getRequestDispatcher("fail.jsp").forward(request, response);
         }
 
-        comentarios = comentarioDao.obtenerComentarios(_idNoticia);
-        if (comentarios == null) {
-            request.getRequestDispatcher("fail.jsp").forward(request, response);
-        }
-
-        request.setAttribute("noticia", noticiaActual);
-        request.setAttribute("usuario", usuarioActial);
-        request.setAttribute("comentarios", comentarios);
-        
-        request.getRequestDispatcher("noticiaCompleta.jsp").forward(request, response);
+        request.setAttribute("usuario", usuarioActual);
+        request.setAttribute("noticias", favs);
+        request.getRequestDispatcher("favoritas.jsp").forward(request, response);
 
     }
 

@@ -89,6 +89,11 @@
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
                         </form>
                     </li>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
+                    </li>
                     <!--Moderador-->
                     <% } else if (usuario.getIdTipoUsuario() == 1) {%>
                     <li>
@@ -116,9 +121,19 @@
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Pendientes" name="">                  
                         </form>
                     </li>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
+                    </li>
                     <%
                         }
                     %>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
+                    </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0">
                     <<form action="./perfilUsuarioControlador" method="GET">
@@ -148,29 +163,35 @@
                                 <th scope="col">Titulo</th>
                                 <th scope="col">Descripción</th>
                                 <th scope="col">Ver</th>
+                                <th scope="col">Quitar</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%
-                                for(modeloNoticia noticia : noticias){
+                                for (modeloNoticia noticia : noticias) {
                             %>
                             <tr>          
-                            <form action="./verNoticia" method="GET">
-                                <th scope="row">
-                                    <input type="text" style="border:none; background: none;" readonly name="autorNoticia" value="<%= noticia.getAutor() %>"/>
-                                </th>
-                                <input type="hidden" value="<%= noticia.getNoticia() %>" name="idNoticia">
-                                <input type="hidden" value="<%= usuario.getNombreUsuario() %>" name="usuario" />
-                                <th scope="row"><%= noticia.getTitulo() %></th>
-                                <th scope="row"><%= noticia.getDecripcionCorta() %></th>
-                                <th scope="row">
-                                    <input type="submit" value="Ver" class="btn btn-primary">
-                                </th>
-                            </form>
-                            </tr>
-                            <%
-                                }
-                            %>
+                        <form action="./verNoticia" method="GET">
+                            <th scope="row">
+                                <input type="text" style="border:none; background: none;" readonly name="autorNoticia" value="<%= noticia.getAutor()%>"/>
+                            </th>
+                            <input type="hidden" value="<%= noticia.getNoticia()%>" name="idNoticia">
+                            <input type="hidden" value="<%= usuario.getNombreUsuario()%>" name="usuario" />
+                            <th scope="row"><%= noticia.getTitulo()%></th>
+                            <th scope="row"><%= noticia.getDecripcionCorta()%></th>
+                            <th scope="row">
+                                <input type="submit" value="Ver" class="btn btn-primary">
+                            </th>
+                        </form>
+                        <form action="./quitarFavoritoControlador" method="POST" >                            
+                            <input type="hidden" value="<%= noticia.getNoticia()%>" name="idNoticia">
+                            <input type="hidden" value="<%= usuario.getNombreUsuario()%>" name="usuario" />
+                            <th scope="row"><input type="submit" value="Quitar" class="btn btn-danger"></th>
+                        </form>
+                        </tr>
+                        <%
+                            }
+                        %>
                         </tbody>
                     </table>
                 </div>

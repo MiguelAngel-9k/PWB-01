@@ -72,14 +72,15 @@
                         </div>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticas marcadas<span class="sr-only">(current)</span>
-                        </a>
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticias pendientes<span class="sr-only">(current)</span>
-                        </a>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
                     </li>
                 </ul>
                 <div class="form-inline my-2 my-lg-0">

@@ -92,6 +92,11 @@
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
                         </form>
                     </li>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
+                    </li>
                     <!--Moderador-->
                     <% } else if (usuario.getIdTipoUsuario() == 1) {%>
                     <li>
@@ -120,6 +125,11 @@
                         <form action="./navNoticiaControlador" method="POST">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Pendientes" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
                         </form>
                     </li>
                     <%

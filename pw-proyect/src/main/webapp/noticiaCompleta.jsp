@@ -103,9 +103,15 @@
                         </form>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticas marcadas<span class="sr-only">(current)</span>
-                        </a>
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
                     </li>
                     <!--Moderador-->
                     <% } else if (usuario.getIdTipoUsuario() == 1) {%>
@@ -123,23 +129,44 @@
                         </form>
                     </li>
                     <li>
-                        <a class="nav-link" href="#">
-                            Noticas marcadas<span class="sr-only">(current)</span>
-                        </a>
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
                     </li>
                     <li>
                         <!--Mostrar todas las noticias por revisar-->
-                        <<form action="./navCreadorContenidoControlador" method="GET">
+                        <form action="./navCreadorContenidoControlador" method="GET">
                             <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>
                             <input class="nav-link" style="border: none; background: none;" type="submit" value="Crear noticia" name="">                  
                         </form>
                     </li>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
+                    </li>
                     <%
-                        }
+                    } else if (usuario.getIdTipoUsuario() == 5) {
                     %>
+                    <li>
+                        <form action="./listaFavoritasControlador" method="GET">
+                            <input type="text" name="getName" value="<%=usuario.getNombreUsuario()%>" style="border: none; background: none; display: none;" class="nav-link" readonly>                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Noticias Favoritas" name="">                  
+                        </form>
+                    </li>
+                    <li>
+                        <form action="./CierreDeSesion" method="POST">                            
+                            <input class="nav-link" style="border: none; background: none;" type="submit" value="Cerrar sesíon" name="">                  
+                        </form>
+                    </li>
                 </ul>
+                <%
+                    }
+                %>
+                </ul
                 <div class="form-inline my-2 my-lg-0">
-                    <<form action="./perfilUsuarioControlador" method="GET">
+                    <form action="./perfilUsuarioControlador" method="GET">
                         <input type="hidden" name="usuario" value="<%= usuario.getNombreUsuario()%>">
                         <input type="submit" style=" border: none; background: none; font-size: 20px; color: whitesmoke;" name="perfil" value="<%= usuario.getNombreUsuario()%>" >
                     </form>
@@ -201,6 +228,7 @@
                         <input type="hidden"  name="idNoticia" value="<%= noticia.getNoticia()%>"/>                        
                         <input type="hidden"  name="idUsuario" value="<%= usuario.getIdUsuario()%>"/>                        
                         <input type="hidden"  name="nombreUsuario" value="<%= usuario.getNombreUsuario()%>"/>                        
+                        <input type="hidden"  name="nombreAutor" value="<%= noticia.getAutor()%>"/>                        
                         <button style="border: 2px solid red ; border-radius: 50px;  background: none;" ><i class="far fa-heart"></i></button>    
                     </form>
                     <%

@@ -414,4 +414,21 @@ public class noticiaDao {
         }
 
     }
+    
+    public static boolean quitFavoritos(int idNoticia, String usuario){
+        try {
+            Connection conn = conexionDB.getConnection();
+            CallableStatement statement = conn.prepareCall("call sp_quitar_favorita(?,?)");
+            statement.setInt(1, idNoticia);
+            statement.setString(2,usuario);
+            
+            statement.executeUpdate();
+            conn.close();            
+            
+            return true;
+        } catch (SQLException ex) {
+            System.out.println(ex.getMessage());
+            return false;
+        }
+    }
 }
