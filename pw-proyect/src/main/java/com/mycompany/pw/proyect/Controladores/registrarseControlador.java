@@ -83,6 +83,23 @@ public class registrarseControlador extends HttpServlet {
         String email = request.getParameter("email");
         String contrasenia = request.getParameter("password");
         String nombreUsuario = request.getParameter("nombreUsuario");
+
+        for (int i = 0; i < nombre.length(); i++) {
+            char cadena = nombre.charAt(i);
+            if (!((cadena >= 'a' && cadena <= 'z') || (cadena >= 'A' && cadena <= 'Z') || cadena == ' ')) {
+                response.sendRedirect("registroUsuarios.jsp");
+                return;
+            }
+        }
+
+        for (int i = 0; i < apellidos.length(); i++) {
+            char cadena = apellidos.charAt(i);
+            if (!((cadena >= 'a' && cadena <= 'z') || (cadena >= 'A' && cadena <= 'Z') || cadena == ' ')) {
+                response.sendRedirect("registroUsuarios.jsp");
+                return;
+            }
+        }
+
         String path = "D:/VSproyects/PWB-01/pw-proyect/src/main/webapp/";
         File fileSaveDir = new File(path + fileUtils.RUTE_USER_IMAGE);
         if (!fileSaveDir.exists()) {

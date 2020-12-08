@@ -134,6 +134,7 @@ mike_ --%>
                                 id="nombre"
                                 name="nombre"
                                 required
+                                minlength="3"
                                 />
                         </div>
                         <div class="form-group">
@@ -143,6 +144,7 @@ mike_ --%>
                                 class="form-control"
                                 id="apellido"
                                 name="apellido"
+                                minlength="3"
                                 />
                         </div>
                         <div class="form-group">
